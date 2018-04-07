@@ -4,7 +4,7 @@ class NktxTro0001 {
 
     public run = () => {
         // Perform initialisation
-        this.cognition.initialiseStarfield(500);
+        this.cognition.initialiseStarfield(100, 4);
         this.loop();
     }
 
