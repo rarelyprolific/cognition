@@ -1,2 +1,2 @@
-let intro = new NktxTro0001();
+let intro = new NktxTro0002();
 intro.run();
