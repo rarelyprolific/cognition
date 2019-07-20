@@ -1,6 +1,7 @@
 class NktxTro0002 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
   private starfield: Cognition.ICognitionEffect;
+  private textPrinter: Cognition.ICognitionEffect;
   private font: HTMLImageElement;
 
   // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
@@ -18,6 +19,9 @@ class NktxTro0002 {
     );
     this.starfield.initialize(100, 4);
 
+    this.textPrinter = new Cognition.TextPrinter();
+    this.textPrinter.initialize("font", 16, 16);
+
     // Load font for textwriter
     this.font = <HTMLImageElement>document.getElementById("font");
 
@@ -27,6 +31,9 @@ class NktxTro0002 {
   private renderFrame() {
     this.cognition.setBackgroundColour("#202A25");
     this.starfield.draw(this.cognition.displayContext, 1);
+
+    this.textPrinter.draw(this.cognition.displayContext, "NEOKORTEX", 642, 550);
+    this.textPrinter.draw(this.cognition.displayContext, "COGNITION", 642, 570);
 
     // Show the entire font
     this.cognition.displayContext.drawImage(this.font, 10, 10);
