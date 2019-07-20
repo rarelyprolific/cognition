@@ -3,6 +3,13 @@ class NktxTro0002 {
   private starfield: Cognition.ICognitionEffect;
   private font: HTMLImageElement;
 
+  // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
+  private theMessage: string = "JUST DOING STUFF HERE!";
+  private currentCharacter: number = 0;
+  private currentXPosition: number = 300;
+  private textPrintDelay: number = 4;
+  // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
+
   public run = () => {
     // Perform initialisation
     this.starfield = new Cognition.Starfield(
@@ -24,7 +31,40 @@ class NktxTro0002 {
     // Show the entire font
     this.cognition.displayContext.drawImage(this.font, 10, 10);
     this.drawString("HELLO WORLD!");
+
+    // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
+    this.drawTextWriter();
+    // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
   }
+
+  // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
+  private drawTextWriter() {
+    // Draw all the characters rendered so far in theMessage
+    for (let i = 0; i < this.currentCharacter; i++) {
+      this.drawCharacter(this.theMessage.charCodeAt(i), this.currentXPosition);
+      this.currentXPosition += 16;
+    }
+
+    // Reset the currentXPosition for the next frame
+    this.currentXPosition = 300;
+
+    // Add a delay between each new character render
+    if (this.textPrintDelay == 0) {
+      // If we've reached the end of theMessage, start at the beginning again
+      if (this.currentCharacter > this.theMessage.length) {
+        this.currentCharacter = 0;
+      } else {
+        this.currentCharacter++;
+      }
+
+      // The delay counter reached zero so reset it for the next iteration
+      this.textPrintDelay = 4;
+    } else {
+      // No new character on this frame, just decrement the delay counter
+      this.textPrintDelay--;
+    }
+  }
+  // **** PROOF OF CONCEPT INLINED TEXT WRITER - REFACTOR LATER! ****
 
   private drawString(stringToDraw: string) {
     let xPositionOffset: number = 0;
