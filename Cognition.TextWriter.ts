@@ -56,6 +56,14 @@ namespace Cognition {
         xPositionOffset += this.fontCharacterWidth;
       }
 
+      // Add a square "cursor" block before each character is written
+      this.screen.fillRect(
+        xPosition + xPositionOffset,
+        yPosition,
+        this.fontCharacterWidth,
+        this.fontCharacterHeight
+      );
+
       // Add a delay between each new character render based on the
       // value passed in via the characterPrintDelayInFrames param
       if (this.characterPrintDelayCounter == 0) {
