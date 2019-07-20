@@ -1,5 +1,6 @@
 namespace Cognition {
   export class TextPrinter implements ICognitionEffect {
+    private screen: CanvasRenderingContext2D;
     private bitmapFont: HTMLImageElement;
     private fontCharacterWidth: number;
     private fontCharacterHeight: number;
@@ -7,10 +8,14 @@ namespace Cognition {
 
     // Initialises the text printer with a bitmap font to use
     public initialize(
+      displayContext: CanvasRenderingContext2D,
       bitmapFontImageHtmlElementId: string,
       fontCharacterWidth: number,
       fontCharacterHeight: number
     ) {
+      // Bind the "screen" to the canvas context
+      this.screen = displayContext;
+
       // Load the bitmap font from a HTML IMG element in the DOM
       this.bitmapFont = <HTMLImageElement>(
         document.getElementById(bitmapFontImageHtmlElementId)
@@ -25,12 +30,7 @@ namespace Cognition {
     }
 
     // Prints the text, using the bitmap font, at the co-ordinates specified
-    public draw(
-      displayContext: CanvasRenderingContext2D,
-      textToPrint: string,
-      xPosition: number,
-      yPosition: number
-    ) {
+    public draw(textToPrint: string, xPosition: number, yPosition: number) {
       let xPositionOffset = 0;
 
       // Render each character of the textToPrint to the screen
@@ -54,7 +54,7 @@ namespace Cognition {
           characterOnRow * this.fontCharacterHeight;
 
         // Render this character to the screen
-        displayContext.drawImage(
+        this.screen.drawImage(
           this.bitmapFont,
           xPositionOfCharacterInBitmapFont,
           yPositionOfCharacterInBitmapFont,
