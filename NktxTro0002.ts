@@ -17,19 +17,25 @@ class NktxTro0002 {
     this.textPrinter = new Cognition.TextPrinter();
     this.textPrinter.initialize(this.cognition.displayContext, "font", 16, 16);
 
-    this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO       ");
+    this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO");
     this.textWriterPages.push(
-      "THIS IS THE SECOND PAGE\n\nI NEED SOMETHING\nINTERESTING TO WRITE       "
+      "THIS IS THE SECOND PAGE\n\nI NEED SOMETHING\nINTERESTING TO WRITE"
     );
     this.textWriterPages.push(
-      "BUT I'M ON THE THIRD PAGE\nNOW AND HAVE NO INSPIRATION       "
+      "BUT I'M ON THE THIRD PAGE\nNOW AND HAVE NO INSPIRATION"
     );
     this.textWriterPages.push(
-      "OH WELL!\n\nLET'S CALL IT THE END THEN...\n\n\n    WRAP!       "
+      "OH WELL!\n\nLET'S CALL IT THE END THEN...\n\n\n    WRAP!"
     );
 
     this.textWriter = new Cognition.TextWriter();
-    this.textWriter.initialize(this.cognition.displayContext, "font", 16, 16);
+    this.textWriter.initialize(
+      this.cognition.displayContext,
+      "font",
+      16,
+      16,
+      30
+    );
 
     // Load font for textwriter
     this.font = <HTMLImageElement>document.getElementById("font");

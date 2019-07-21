@@ -11,14 +11,25 @@ namespace Cognition {
     // Tracks the delay count between each character being rendered
     private characterPrintDelayCounter: number = 0;
 
+    // Stores the configured page clear delay specified in initialize()
+    private configuredPageClearDelayInFrames: number;
+    // Tracks the current page being rendered
     private currentPage: number = 0;
+    // Tracks the delay count before a page is cleared and we move to the next
+    private pageClearDelayCounter: number = 0;
+
+    // Resets the page clear delay counter back to the configured value
+    public resetPageClearDelayCounter() {
+      this.pageClearDelayCounter = this.configuredPageClearDelayInFrames;
+    }
 
     // Initialises the text writer with a bitmap font to use
     public initialize(
       displayContext: CanvasRenderingContext2D,
       bitmapFontImageHtmlElementId: string,
       fontCharacterWidth: number,
-      fontCharacterHeight: number
+      fontCharacterHeight: number,
+      pageClearDelayInFrames: number
     ) {
       // Bind the "screen" to the canvas context
       this.screen = displayContext;
@@ -34,6 +45,10 @@ namespace Cognition {
 
       // Calculate how many characters on a single row of the bitmap font
       this.charactersPerRow = this.bitmapFont.width / fontCharacterWidth;
+
+      // Store the configured page clear delay and set up the counter for first run
+      this.configuredPageClearDelayInFrames = pageClearDelayInFrames;
+      this.resetPageClearDelayCounter();
     }
 
     public draw(
@@ -51,13 +66,16 @@ namespace Cognition {
           characterPrintDelayInFrames
         )
       ) {
-        // TODO: We need a configurable pause here show the whole of the current
-        // page for a couple of seconds before we clear it and start writing
-        // the next page
-
-        // If drawPage returns false, we've reached the end of the current page
-        // so move to the next page
-        this.currentPage++;
+        // If drawPage returns true, we've reached the end of the current page
+        // (figure out a better way to do this in the future!) so, wait
+        // the specified delay period, clear the page and go to the next page
+        if (this.pageClearDelayCounter == 0) {
+          this.currentPage++;
+          this.currentCharacter = 0;
+          this.resetPageClearDelayCounter();
+        } else {
+          this.pageClearDelayCounter--;
+        }
 
         // If we're on the last page, wrap around to the first page
         if (this.currentPage == textToPrint.length) {
@@ -113,8 +131,6 @@ namespace Cognition {
 
         // If we've reach the end of textToPrint, start at the beginning again
         if (this.currentCharacter > textToPrint.length) {
-          this.currentCharacter = 0;
-
           // Return true if we've reached the end of the current page
           return true;
         }
