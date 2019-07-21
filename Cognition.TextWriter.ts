@@ -11,6 +11,8 @@ namespace Cognition {
     // Tracks the delay count between each character being rendered
     private characterPrintDelayCounter: number = 0;
 
+    private currentPage: number = 0;
+
     // Initialises the text writer with a bitmap font to use
     public initialize(
       displayContext: CanvasRenderingContext2D,
@@ -35,11 +37,41 @@ namespace Cognition {
     }
 
     public draw(
-      textToPrint: string,
+      textToPrint: string[],
       xPosition: number,
       yPosition: number,
       characterPrintDelayInFrames: number
     ) {
+      // Draw the current page
+      if (
+        this.drawPage(
+          textToPrint[this.currentPage],
+          xPosition,
+          yPosition,
+          characterPrintDelayInFrames
+        )
+      ) {
+        // TODO: We need a configurable pause here show the whole of the current
+        // page for a couple of seconds before we clear it and start writing
+        // the next page
+
+        // If drawPage returns false, we've reached the end of the current page
+        // so move to the next page
+        this.currentPage++;
+
+        // If we're on the last page, wrap around to the first page
+        if (this.currentPage == textToPrint.length) {
+          this.currentPage = 0;
+        }
+      }
+    }
+
+    public drawPage(
+      textToPrint: string,
+      xPosition: number,
+      yPosition: number,
+      characterPrintDelayInFrames: number
+    ): boolean {
       let xPositionOffset: number = 0;
       let yPositionOffset: number = 0;
 
@@ -82,11 +114,17 @@ namespace Cognition {
         // If we've reach the end of textToPrint, start at the beginning again
         if (this.currentCharacter > textToPrint.length) {
           this.currentCharacter = 0;
+
+          // Return true if we've reached the end of the current page
+          return true;
         }
       } else {
         // No new character on this frame, just decrement the delay counter
         this.characterPrintDelayCounter--;
       }
+
+      // Return false if we are still writing the current page
+      return false;
     }
 
     public drawCharacter(

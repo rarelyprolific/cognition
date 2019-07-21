@@ -3,6 +3,7 @@ class NktxTro0002 {
   private starfield: Cognition.ICognitionEffect;
   private textPrinter: Cognition.ICognitionEffect;
   private textWriter: Cognition.ICognitionEffect;
+  private textWriterPages: string[] = new Array();
   private font: HTMLImageElement;
 
   public run = () => {
@@ -15,6 +16,17 @@ class NktxTro0002 {
 
     this.textPrinter = new Cognition.TextPrinter();
     this.textPrinter.initialize(this.cognition.displayContext, "font", 16, 16);
+
+    this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO       ");
+    this.textWriterPages.push(
+      "THIS IS THE SECOND PAGE\n\nI NEED SOMETHING\nINTERESTING TO WRITE       "
+    );
+    this.textWriterPages.push(
+      "BUT I'M ON THE THIRD PAGE\nNOW AND HAVE NO INSPIRATION       "
+    );
+    this.textWriterPages.push(
+      "OH WELL!\n\nLET'S CALL IT THE END THEN...\n\n\n    WRAP!       "
+    );
 
     this.textWriter = new Cognition.TextWriter();
     this.textWriter.initialize(this.cognition.displayContext, "font", 16, 16);
@@ -32,17 +44,10 @@ class NktxTro0002 {
     // Show the entire font
     this.cognition.displayContext.drawImage(this.font, 10, 10);
 
-    this.textPrinter.draw("HELLO WORLD!", 150, 150);
+    // Run the text writer
+    this.textWriter.draw(this.textWriterPages, 200, 250, 5);
 
-    this.textWriter.draw(
-      "LET US TRY\nTHIS\n\nUSING\nMULTIPLE LINES!",
-      200,
-      250,
-      5
-    );
-
-    this.textWriter.draw("HELLO FROM TEXTWRITER!", 200, 400, 5);
-
+    // Run the text printer
     this.textPrinter.draw("NEOKORTEX", 642, 550);
     this.textPrinter.draw("COGNITION", 642, 570);
   }
