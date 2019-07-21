@@ -41,6 +41,7 @@ namespace Cognition {
       characterPrintDelayInFrames: number
     ) {
       let xPositionOffset: number = 0;
+      let yPositionOffset: number = 0;
 
       // Draw all the characters rendered so far from textToPrint up to
       // the currentCharacter
@@ -48,18 +49,24 @@ namespace Cognition {
         this.drawCharacter(
           textToPrint.charAt(i),
           xPosition + xPositionOffset,
-          yPosition
+          yPosition + yPositionOffset
         );
 
         // Increment the xPositionOffset to "move the cursor left"
         // before rendering the next character
         xPositionOffset += this.fontCharacterWidth;
+
+        // If a "newline" character is encountered in textToPrint, move to the next line
+        if (textToPrint.charAt(i) == "\n") {
+          xPositionOffset = 0;
+          yPositionOffset += this.fontCharacterHeight;
+        }
       }
 
       // Add a square "cursor" block before each character is written
       this.screen.fillRect(
         xPosition + xPositionOffset,
-        yPosition,
+        yPosition + yPositionOffset,
         this.fontCharacterWidth,
         this.fontCharacterHeight
       );

@@ -34,6 +34,13 @@ class NktxTro0002 {
 
     this.textPrinter.draw("HELLO WORLD!", 150, 150);
 
+    this.textWriter.draw(
+      "LET US TRY\nTHIS\n\nUSING\nMULTIPLE LINES!",
+      200,
+      250,
+      5
+    );
+
     this.textWriter.draw("HELLO FROM TEXTWRITER!", 200, 400, 5);
 
     this.textPrinter.draw("NEOKORTEX", 642, 550);
