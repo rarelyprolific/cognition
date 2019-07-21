@@ -57,6 +57,9 @@ namespace Cognition {
       yPosition: number,
       characterPrintDelayInFrames: number
     ) {
+      // TODO: Move the "characterPrintDelayInFrames" into initialize() in the same
+      // way "pageClearDelayInFrames" is done
+
       // Draw the current page
       if (
         this.drawPage(
@@ -112,14 +115,6 @@ namespace Cognition {
           yPositionOffset += this.fontCharacterHeight;
         }
       }
-
-      // Add a square "cursor" block before each character is written
-      this.screen.fillRect(
-        xPosition + xPositionOffset,
-        yPosition + yPositionOffset,
-        this.fontCharacterWidth,
-        this.fontCharacterHeight
-      );
 
       // Add a delay between each new character render based on the
       // value passed in via the characterPrintDelayInFrames param

@@ -4,19 +4,16 @@ class NktxTro0002 {
   private textPrinter: Cognition.ICognitionEffect;
   private textWriter: Cognition.ICognitionEffect;
   private textWriterPages: string[] = new Array();
-  private font: HTMLImageElement;
 
   public run = () => {
-    // Perform initialisation
+    // Set up the starfield
     this.starfield = new Cognition.Starfield(
       this.cognition.displayWidth,
       this.cognition.displayHeight
     );
     this.starfield.initialize(100, 4);
 
-    this.textPrinter = new Cognition.TextPrinter();
-    this.textPrinter.initialize(this.cognition.displayContext, "font", 16, 16);
-
+    // Set up the textwriter
     this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO");
     this.textWriterPages.push(
       "THIS IS THE SECOND PAGE\n\nI NEED SOMETHING\nINTERESTING TO WRITE"
@@ -37,18 +34,19 @@ class NktxTro0002 {
       30
     );
 
-    // Load font for textwriter
-    this.font = <HTMLImageElement>document.getElementById("font");
+    // Set up the textprinter
+    this.textPrinter = new Cognition.TextPrinter();
+    this.textPrinter.initialize(this.cognition.displayContext, "font", 16, 16);
 
     this.loop();
   };
 
   private renderFrame() {
+    // Set the background colour
     this.cognition.setBackgroundColour("#202A25");
-    this.starfield.draw(this.cognition.displayContext, 1);
 
-    // Show the entire font
-    this.cognition.displayContext.drawImage(this.font, 10, 10);
+    // Run the starfield
+    this.starfield.draw(this.cognition.displayContext, 1);
 
     // Run the text writer
     this.textWriter.draw(this.textWriterPages, 200, 250, 5);
