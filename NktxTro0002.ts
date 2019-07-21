@@ -1,6 +1,7 @@
 class NktxTro0002 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
   private starfield: Cognition.ICognitionEffect;
+  private scroller: Cognition.ICognitionEffect;
   private textPrinter: Cognition.ICognitionEffect;
   private textWriter: Cognition.ICognitionEffect;
   private textWriterPages: string[] = new Array();
@@ -12,6 +13,17 @@ class NktxTro0002 {
       this.cognition.displayHeight
     );
     this.starfield.initialize(100, 4);
+
+    // Set up the scroller
+    this.scroller = new Cognition.Scroller();
+    this.scroller.initialize(
+      this.cognition.displayContext,
+      "font",
+      16,
+      16,
+      this.cognition.displayWidth,
+      0
+    );
 
     // Set up the textwriter
     this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO");
@@ -47,6 +59,9 @@ class NktxTro0002 {
 
     // Run the starfield
     this.starfield.draw(this.cognition.displayContext, 1);
+
+    // Run the scroller
+    this.scroller.draw("THE SCROLLTEXT", 5);
 
     // Run the text writer
     this.textWriter.draw(this.textWriterPages, 200, 250, 5);
