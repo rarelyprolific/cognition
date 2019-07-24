@@ -8,10 +8,9 @@ some 2d old skool demo effect fing
 
 ## NEXT PRIORITIES
 
-- Refactor the text writer code into an ICognitionEffect implementation and out of NktxTro0002.ts.
-- We may want two text print/writer implementations: One to just render a block of static text and a second one for funkier text writer effects.
-- Add a simple "ImageDisplay" ICognitionEffect to show an image for NKX logos.
 - Figure out module replaying: What we want to do is use Firehawk's replayer but wrap the usage of it inside a Cognition music class of some kind. Initially we probably only need to start the mod playing on init and stop it at the end. In the future, we could expose channel and player information into the render loop so we could sync effects but.. Let's start simple!
+- ~~We may want two text print/writer implementations: One to just render a block of static text and a second one for funkier text writer effects.~~ **DONE** But a few TODOs to clear up.
+- Add a simple "ImageDisplay" ICognitionEffect to show an image for NKX logos.
 
 ## TODO
 
