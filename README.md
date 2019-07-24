@@ -27,6 +27,27 @@ Just about everything :).. But specifically:
 - Finish the module replayer code!
 - Finish the vu-meter code!
 
+## What tools do you need to build and run Cognition?
+
+Cognition is at a very early stage of development. The code is likely to change significantly but, at the moment, it is just a few TypeScript classes bound to a HTML CANVAS element.
+
+This is what I use to build and run it:
+
+- [Visual Studio Code](https://code.visualstudio.com/) - Source code editor. Think better than a text editor for coding but without the bloat of a full IDE such as Visual Studio. It should come with the TypeScript compiler pre-installed these days too.
+
+Here are a couple of Visual Studio Code extensions to make life easier _(install them via the Extensions section [Ctrl+Shift+X]_):
+
+- **LiveServer** - A development HTTP server which will auto-reload pages as they change.
+- **Prettier** - Auto-formats code and markup. Keeps everything tidy with minimal fuss _(only really needed if you plan on changing or writing any code)_.
+
+## How do you build and run Cognition?
+
+1. In Visual Studio Code, just open the Cognition repo as a folder.
+2. Press **Ctrl+'** or select **Terminal->New Terminal** to open a console.
+3. Type **tsc --watch** into the console. This will automatically build the code using the TypeScript compiler and wait for files to change. If you change a file it will be automatically detected and rebuilt when you save.
+4. Click the **Go Live** button on the bottom-right of the status bar. This will launch the LiveServer extension and load Cognition into a browser. Each time the code changes, LiveServer will refresh.
+5. _Write more code and experience instant gratification or humiliating failure without delay!_
+
 ## Additional Credits
 
 Uses [Firehawk's webaudio module player](https://github.com/jhalme/webaudio-mod-player) for replaying ProTracker modules.
