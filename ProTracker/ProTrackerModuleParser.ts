@@ -1,33 +1,32 @@
 namespace Cognition.Audio {
   export class ProTrackerModuleParser {
-    private readonly SongNameOffset: number = 0;
-    private readonly SongNameLength: number = 20;
+    private RawModuleBytes: Uint8Array;
 
-    private readonly ModuleTypeOffset: number = 1080;
-    private readonly ModuleTypeLength: number = 4;
+    public Parse(rawModuleBytesToParse: Uint8Array): ProTrackerModule {
+      this.RawModuleBytes = rawModuleBytesToParse;
 
-    public Parse(rawModuleDataToParse: Uint8Array): ProTrackerModule {
       let module = new ProTrackerModule();
 
       // Parse the song name of the module
-      let songNameBytes = rawModuleDataToParse.slice(
-        this.SongNameOffset,
-        this.SongNameOffset + this.SongNameLength
-      );
-      module.SongName = String.fromCharCode.apply(null, songNameBytes);
+      module.SongName = this.GetStringInformationFromModule(0, 20);
 
       // Parse the type of the module
       // (There can be a few quirks here and there is some useful info
       // here: http://coppershade.org/articles/More!/Topics/Protracker_File_Format/
       // Depending how "complex" this is we may need different parsers for different
       // types of module.)
-      let moduleTypeBytes = rawModuleDataToParse.slice(
-        this.ModuleTypeOffset,
-        this.ModuleTypeOffset + this.ModuleTypeLength
-      );
-      module.ModuleType = String.fromCharCode.apply(null, moduleTypeBytes);
+      module.ModuleType = this.GetStringInformationFromModule(1080, 4);
 
       return module;
+    }
+
+    // Gets string information embedded at an offset in the raw module bytes
+    private GetStringInformationFromModule(
+      offset: number,
+      length: number
+    ): string {
+      let stringBytes = this.RawModuleBytes.slice(offset, offset + length);
+      return String.fromCharCode.apply(null, stringBytes);
     }
   }
 }
