@@ -30,7 +30,9 @@ class NktxTro0003 {
     console.log("SongName: " + module.SongName);
     console.log("SongLength: " + module.SongLength);
     console.log("ChannelCount: " + module.Channels.length);
-    console.log("SampleCount: " + module.Samples.length);
+    console.log("Position[3]: " + module.SongPositions[3]);
+    console.log("Position[4]: " + module.SongPositions[4]);
+    console.log("Position[5]: " + module.SongPositions[5]);
     console.log(
       module.Samples[0].Name +
         " - " +

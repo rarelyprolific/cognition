@@ -21,17 +21,16 @@ namespace Cognition.Audio {
         return undefined;
       }
 
-      // We seem to have what looks like a valid ProTracker module so let's
-      // go get the rest of the details from it.
-
-      // Get the song name
+      // We have a ProTracker module so let's get the rest of the data.
       this.Module.SongName = this.GetModuleString(0, 20);
-
-      // Get the song length
       this.Module.SongLength = this.GetModuleIntegerFromByte(950);
-
-      // Get the samples
       this.Module.Samples = this.GetSamples();
+      this.Module.SongPositions = this.GetSongPositions();
+
+      // TODO: We need to test if byte offset 951 is 127 and handle
+      // [Well... this little byte here is set to 127, so that old
+      // trackers will search through all patterns when loading.
+      // Noisetracker uses this byte for restart, but we don't.]
 
       return this.Module;
     }
@@ -64,6 +63,18 @@ namespace Cognition.Audio {
       }
 
       return samples;
+    }
+
+    private GetSongPositions(): Array<number> {
+      // We always have 128 song positions
+      let songPositions = new Array<number>(128);
+
+      // Build the song positions collection from the raw data
+      for (let i = 0; i < songPositions.length; i++) {
+        songPositions[i] = this.GetModuleIntegerFromByte(952 + i);
+      }
+
+      return songPositions;
     }
 
     // Find out which type of ProTracker module we are dealing with

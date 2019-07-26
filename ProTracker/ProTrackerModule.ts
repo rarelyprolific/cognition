@@ -5,5 +5,6 @@ namespace Cognition.Audio {
     public SongLength: number;
     public Channels: Array<ProTrackerChannel>;
     public Samples: Array<ProTrackerSample>;
+    public SongPositions: Array<number>;
   }
 }
