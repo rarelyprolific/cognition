@@ -1,5 +1,6 @@
 declare var Protracker: any;
 declare var Lite13Module: any;
+declare var PostureSliding: any;
 
 class NktxTro0003 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
@@ -14,7 +15,7 @@ class NktxTro0003 {
     var modplayer = new Protracker();
 
     // Load the module
-    var encodedModule = window.atob(Lite13Module);
+    var encodedModule = window.atob(PostureSliding);
 
     // Decode the module back from base64 into a byte array
     var moduleLength = encodedModule.length;
