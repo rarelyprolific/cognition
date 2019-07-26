@@ -6,5 +6,6 @@ namespace Cognition.Audio {
     public Volume: number;
     public LoopStartOffset: number;
     public LoopLength: number;
+    public Data: Uint8Array;
   }
 }
