@@ -28,6 +28,14 @@ class NktxTro0003 {
     let module = moduleParser.Parse(moduleBytes);
     console.log("ModuleType: " + module.ModuleType);
     console.log("SongName: " + module.SongName);
+    console.log("ChannelCount: " + module.Channels.length);
+    console.log("SampleCount: " + module.Samples.length);
+    console.log(module.Samples[0].Name + " - " + module.Samples[0].SizeInBytes);
+    console.log(module.Samples[1].Name + " - " + module.Samples[1].SizeInBytes);
+    console.log(
+      module.Samples[30].Name + " - " + module.Samples[30].SizeInBytes
+    );
+    //module.Samples.forEach(sample => console.log(sample.Name.length));
 
     // TODO: moduleBytes contains the Lite13 ProTracker module but we can't use it yet.
     // First, we need to implement the code to parse the pattern and sample data from the module.
