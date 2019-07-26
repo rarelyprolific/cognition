@@ -27,16 +27,43 @@ namespace Cognition.Audio {
       // Get the song name
       this.Module.SongName = this.GetModuleString(0, 20);
 
+      // Get the song length
+      this.Module.SongLength = this.GetModuleIntegerFromByte(950);
+
       // Get the samples
       this.Module.Samples = this.GetSamples();
 
       return this.Module;
     }
 
-    // Gets ASCII string information embedded at offsets in the raw module bytes
-    private GetModuleString(offset: number, length: number): string {
-      let stringBytes = this.RawModuleBytes.slice(offset, offset + length);
-      return String.fromCharCode.apply(null, stringBytes);
+    private GetSamples(): Array<ProTrackerSample> {
+      // We always have 31 samples (verify if this is always the case)
+      let samples = new Array<ProTrackerSample>(31);
+
+      // Build the sample collection from the raw sample data
+      let sampleOffset = 0;
+      for (let i = 0; i < samples.length; i++) {
+        // Create and populate a new sample
+        let sample = new ProTrackerSample();
+
+        // TODO: I need to get a module which uses sample finetuning to
+        // determine if I'm parsing sample.FineTune correctly. Just doing
+        // the most simple thing for now but I need to check it later!
+        sample.Name = this.GetModuleString(20 + sampleOffset, 22);
+        sample.SizeInBytes = this.GetModuleIntegerFromWord(42 + sampleOffset);
+        sample.FineTune = this.GetModuleIntegerFromByte(44 + sampleOffset);
+        sample.Volume = this.GetModuleIntegerFromByte(45 + sampleOffset);
+        sample.LoopStartOffset = this.GetModuleIntegerFromWord(
+          46 + sampleOffset
+        );
+        sample.LoopLength = this.GetModuleIntegerFromWord(48 + sampleOffset);
+
+        // Assign this sample to the collection and move to the next sample
+        samples[i] = sample;
+        sampleOffset += 30;
+      }
+
+      return samples;
     }
 
     // Find out which type of ProTracker module we are dealing with
@@ -56,35 +83,22 @@ namespace Cognition.Audio {
       }
     }
 
-    private GetSamples(): Array<ProTrackerSample> {
-      // We always have 31 samples (verify if this is always the case)
-      let samples = new Array<ProTrackerSample>(31);
+    // Gets ASCII string information embedded at an offset in the raw module bytes
+    private GetModuleString(offset: number, length: number): string {
+      let stringBytes = this.RawModuleBytes.slice(offset, offset + length);
+      return String.fromCharCode.apply(null, stringBytes);
+    }
 
-      let sampleOffset = 0;
+    // Gets a byte-sized integer value embedded at an offset in the raw module bytes
+    private GetModuleIntegerFromByte(offset: number): number {
+      return this.RawModuleBytes.slice(offset, offset + 1)[0];
+    }
 
-      for (let i = 0; i < samples.length; i++) {
-        let sample = new ProTrackerSample();
-
-        // Get the name of the sample
-        sample.Name = this.GetModuleString(20 + sampleOffset, 22);
-
-        // Get the size of the sample. Stored as the number of
-        // words so we multiply by two to get the size in bytes.
-        let sampleSizeBytes = this.RawModuleBytes.slice(
-          42 + sampleOffset,
-          42 + sampleOffset + 2
-        );
-        sample.SizeInBytes =
-          (sampleSizeBytes[0] * 256 + sampleSizeBytes[1]) * 2;
-
-        // Assign this sample back to the collection
-        samples[i] = sample;
-
-        // Move to the next sample
-        sampleOffset += 30;
-      }
-
-      return samples;
+    // Gets a word-sized (i.e. 2 byte/16-bit) integer value embedded at an offset
+    // in the raw module bytes
+    private GetModuleIntegerFromWord(offset: number): number {
+      let bytes = this.RawModuleBytes.slice(offset, offset + 2);
+      return (bytes[0] * 256 + bytes[1]) * 2;
     }
   }
 }
