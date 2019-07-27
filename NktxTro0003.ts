@@ -5,6 +5,7 @@ declare var PostureSliding: any;
 class NktxTro0003 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
   private textPrinter: Cognition.ICognitionEffect;
+  private module: Cognition.Audio.ProTrackerModule;
 
   public run = () => {
     // Set up the textprinter
@@ -26,57 +27,46 @@ class NktxTro0003 {
     }
 
     let moduleParser = new Cognition.Audio.ProTrackerModuleParser();
-    let module = moduleParser.Parse(moduleBytes);
-    console.log("ModuleType: " + module.ModuleType);
-    console.log("SongName: " + module.SongName);
-    console.log("SongLength: " + module.SongLength);
-    console.log("NumberOfPatterns: " + module.NumberOfPatterns);
-    console.log("ChannelCount: " + module.Channels.length);
-    console.log("Position[3]: " + module.SongPositions[3]);
-    console.log("Position[4]: " + module.SongPositions[4]);
-    console.log("Position[5]: " + module.SongPositions[5]);
+    this.module = moduleParser.Parse(moduleBytes);
+    console.log("SongLength: " + this.module.SongLength);
+    console.log("NumberOfPatterns: " + this.module.NumberOfPatterns);
+    console.log("ChannelCount: " + this.module.Channels.length);
+    console.log("Position[3]: " + this.module.SongPositions[3]);
+    console.log("Position[4]: " + this.module.SongPositions[4]);
+    console.log("Position[5]: " + this.module.SongPositions[5]);
     console.log(
-      module.Samples[0].Name +
+      this.module.Samples[0].Name +
         " - " +
-        module.Samples[0].SizeInBytes +
+        this.module.Samples[0].FineTune +
         " - " +
-        module.Samples[0].FineTune +
+        this.module.Samples[0].Volume +
         " - " +
-        module.Samples[0].Volume +
+        this.module.Samples[0].LoopStartOffset +
         " - " +
-        module.Samples[0].LoopStartOffset +
-        " - " +
-        module.Samples[0].LoopLength
+        this.module.Samples[0].LoopLength
     );
     console.log(
-      module.Samples[1].Name +
+      this.module.Samples[1].Name +
         " - " +
-        module.Samples[1].SizeInBytes +
+        this.module.Samples[1].FineTune +
         " - " +
-        module.Samples[1].FineTune +
+        this.module.Samples[1].Volume +
         " - " +
-        module.Samples[1].Volume +
+        this.module.Samples[1].LoopStartOffset +
         " - " +
-        module.Samples[1].LoopStartOffset +
-        " - " +
-        module.Samples[1].LoopLength
+        this.module.Samples[1].LoopLength
     );
     console.log(
-      module.Samples[30].Name +
+      this.module.Samples[30].Name +
         " - " +
-        module.Samples[30].SizeInBytes +
+        this.module.Samples[30].FineTune +
         " - " +
-        module.Samples[30].FineTune +
+        this.module.Samples[30].Volume +
         " - " +
-        module.Samples[30].Volume +
+        this.module.Samples[30].LoopStartOffset +
         " - " +
-        module.Samples[30].LoopStartOffset +
-        " - " +
-        module.Samples[30].LoopLength
+        this.module.Samples[30].LoopLength
     );
-    console.log("First sample data length: " + module.Samples[0].Data.length);
-    console.log("Second sample data length: " + module.Samples[1].Data.length);
-    console.log("Fifth sample data length: " + module.Samples[4].Data.length);
 
     // TODO: moduleBytes contains the Lite13 ProTracker module but we can't use it yet.
     // First, we need to implement the code to parse the pattern and sample data from the module.
@@ -125,14 +115,39 @@ class NktxTro0003 {
     this.textPrinter.draw(
       "PROTRACKER MODULE REPLAYER - WORK IN PROGRESS",
       20,
-      300
+      6
     );
 
     this.textPrinter.draw(
       "(WELL, IT'S A WHITE NOISE GENERATOR SO FAR!)",
       40,
-      320
+      25
     );
+
+    this.textPrinter.draw(
+      "MODULENAME: " + this.module.SongName.toUpperCase(),
+      20,
+      55
+    );
+
+    for (let i = 0; i < 31; i++) {
+      let padZero = "";
+
+      if (i < 10) {
+        padZero = "0";
+      }
+
+      this.textPrinter.draw(
+        padZero +
+          i.toString() +
+          " " +
+          this.module.Samples[i].Name.toUpperCase() +
+          " " +
+          this.module.Samples[i].SizeInBytes,
+        16,
+        85 + i * 16
+      );
+    }
 
     this.textPrinter.draw("NEOKORTEX", 642, 550);
     this.textPrinter.draw("COGNITION", 642, 570);
