@@ -1,4 +1,43 @@
 namespace Cognition.Audio {
+  const BasePeriodTable: Array<number> = [
+    856,
+    808,
+    762,
+    720,
+    678,
+    640,
+    604,
+    570,
+    538,
+    508,
+    480,
+    453,
+    428,
+    404,
+    381,
+    360,
+    339,
+    320,
+    302,
+    285,
+    269,
+    254,
+    240,
+    226,
+    214,
+    202,
+    190,
+    180,
+    170,
+    160,
+    151,
+    143,
+    135,
+    127,
+    120,
+    113
+  ];
+
   export class ProTrackerModuleParser {
     private RawModuleBytes: Uint8Array;
     private Module: ProTrackerModule;
@@ -26,15 +65,99 @@ namespace Cognition.Audio {
       this.Module.SongLength = this.ParseIntegerFromByte(950);
       this.Module.SongPositions = this.GetSongPositionsAndCalculateNumberOfPatterns();
       this.Module.Samples = this.GetSamples();
+      this.Module.Patterns = this.GetPatterns();
 
       // TODO: We need to test if byte offset 951 is 127 and handle
       // [Well... this little byte here is set to 127, so that old
       // trackers will search through all patterns when loading.
       // Noisetracker uses this byte for restart, but we don't.]
 
-      // TODO: We still need to get the pattern information!
-
       return this.Module;
+    }
+
+    private GetPatterns(): Array<ProTrackerPattern> {
+      // We have already calculated the number of patterns when getting song positions
+      let patterns = new Array<ProTrackerPattern>(this.Module.NumberOfPatterns);
+
+      // TODO: We still need to get the pattern information.
+      // The pattern information starts at offset 1084.
+      let patternOffset = 1084;
+
+      patterns[0] = new ProTrackerPattern();
+      patterns[0].Channels = new Array<ProTrackerChannel>(4);
+
+      // There are 256 pattern entries in a pattern (64 positions across 4 channels)
+      // The information in each pattern entry in stored across 4 bytes, so each
+      //     pattern is 1024 bytes in length.
+      // Each pattern entry has five distinct values (as above) we need to parse
+      //     out. So our unpacked array will be 1280 bytes (64 pos*4 channels*5 values)
+
+      let patternEntries = this.RawModuleBytes.slice(
+        patternOffset,
+        patternOffset + 17
+      );
+      console.log("Pattern entries: " + patternEntries);
+
+      // Each pattern entry has five values:
+      // 1. Note (254=noteoff, 255=no note)
+      // 2. Sample (0=no instrument, 1..255=sample number)
+      // 3. Volume (255=no volume set, 0..64=set volume)
+      // 4. Command (0x2e=no command, 0..0x24=effect command)
+      // 5. Data (0..255)
+
+      // The first packed values are:
+      // 1,    29, 191,  5
+      // 0,     0,   0,  0
+      // 143, 162,  15,  1
+      // 125,  90,   7,  0
+
+      // The unpacked values from the first four pattern entries in the first
+      // four channels of Lite13 should be:
+      //  55, 11, 255, 15,  5
+      // 255,  0, 255,  0,  0
+      //  71, 10, 255,  2, 15
+      //  50,  5, 255, 10,  7
+
+      // Get first pattern entry values
+      let firstNote = ((patternEntries[0] & 0x0f) << 8) | patternEntries[1];
+      firstNote = BasePeriodTable.indexOf(firstNote);
+      firstNote = firstNote % 12 | ((Math.floor(firstNote / 12) + 2) << 4);
+      console.log("First note value should be 55: " + firstNote);
+
+      let firstSampleNumber =
+        (patternEntries[0] & 0xf0) | (patternEntries[2] >> 4);
+      console.log("First sample number should be 11: " + firstSampleNumber);
+      let firstCommandValue = patternEntries[2] & 0x0f;
+      console.log("First command value should be 15: " + firstCommandValue);
+      console.log("First data value should be 5: " + patternEntries[3]);
+
+      // Get third pattern entry values
+      let thirdNote = ((patternEntries[8] & 0x0f) << 8) | patternEntries[9];
+      thirdNote = BasePeriodTable.indexOf(thirdNote);
+      thirdNote = thirdNote % 12 | ((Math.floor(thirdNote / 12) + 2) << 4);
+      console.log("Third note value should be 71: " + thirdNote);
+
+      let thirdSampleNumber =
+        (patternEntries[8] & 0xf0) | (patternEntries[10] >> 4);
+      console.log("Third sample number should be 10: " + thirdSampleNumber);
+      let thirdCommandValue = patternEntries[10] & 0x0f;
+      console.log("Third command value should be 2: " + thirdCommandValue);
+      console.log("Third data value should be 15: " + patternEntries[11]);
+
+      // Get fourth pattern entry values
+      let fourthNote = ((patternEntries[12] & 0x0f) << 8) | patternEntries[13];
+      fourthNote = BasePeriodTable.indexOf(fourthNote);
+      fourthNote = fourthNote % 12 | ((Math.floor(fourthNote / 12) + 2) << 4);
+      console.log("Fourth note value should be 50: " + fourthNote);
+
+      let fourthSampleNumber =
+        (patternEntries[12] & 0xf0) | (patternEntries[14] >> 4);
+      console.log("Fourth sample number should be 5: " + fourthSampleNumber);
+      let fourthCommandValue = patternEntries[14] & 0x0f;
+      console.log("Fourth command value should be 10: " + fourthCommandValue);
+      console.log("Fourth data value should be 7: " + patternEntries[15]);
+
+      return patterns;
     }
 
     private GetSamples(): Array<ProTrackerSample> {
