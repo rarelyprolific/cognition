@@ -232,18 +232,21 @@ namespace Cognition.Audio {
     }
 
     // Gets ASCII string information embedded at an offset in the raw module bytes
+    // TODO: Tidy this up later.. We don't need to use slice here anymore!
     private ParseString(offset: number, length: number): string {
       let stringBytes = this.RawModuleBytes.slice(offset, offset + length);
       return String.fromCharCode.apply(null, stringBytes);
     }
 
     // Gets a byte-sized integer value embedded at an offset in the raw module bytes
+    // TODO: Tidy this up later.. We don't need to use slice here anymore!
     private ParseIntegerFromByte(offset: number): number {
       return this.RawModuleBytes.slice(offset, offset + 1)[0];
     }
 
     // Gets a word-sized (i.e. 2 byte/16-bit) integer value embedded at an offset
     // in the raw module bytes
+    // TODO: Tidy this up later.. We don't need to use slice here anymore!
     private ParseIntegerFromWord(offset: number): number {
       let bytes = this.RawModuleBytes.slice(offset, offset + 2);
       return (bytes[0] * 256 + bytes[1]) * 2;
