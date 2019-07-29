@@ -1,43 +1,4 @@
 namespace Cognition.Audio {
-  const BasePeriodTable: Array<number> = [
-    856,
-    808,
-    762,
-    720,
-    678,
-    640,
-    604,
-    570,
-    538,
-    508,
-    480,
-    453,
-    428,
-    404,
-    381,
-    360,
-    339,
-    320,
-    302,
-    285,
-    269,
-    254,
-    240,
-    226,
-    214,
-    202,
-    190,
-    180,
-    170,
-    160,
-    151,
-    143,
-    135,
-    127,
-    120,
-    113
-  ];
-
   export class ProTrackerModuleParser {
     private RawModuleBytes: Uint8Array;
     private Module: ProTrackerModule;
@@ -83,14 +44,42 @@ namespace Cognition.Audio {
       // The pattern information starts at offset 1084.
       let patternOffset = 1084;
 
-      patterns[0] = new ProTrackerPattern();
-      patterns[0].Channels = new Array<ProTrackerChannel>(4);
+      //patterns[0] = new ProTrackerPattern();
+      //patterns[0].Channels = new Array<ProTrackerChannel>(4);
 
       // There are 256 pattern entries in a pattern (64 positions across 4 channels)
       // The information in each pattern entry in stored across 4 bytes, so each
       //     pattern is 1024 bytes in length.
       // Each pattern entry has five distinct values (as above) we need to parse
       //     out. So our unpacked array will be 1280 bytes (64 pos*4 channels*5 values)
+
+      for (let p = 0; p < patterns.length; p++) {
+        let pattern = new ProTrackerPattern();
+        let channel = new ProTrackerChannel();
+        let patternEntry = new ProTrackerPatternEntry();
+
+        // Get values
+        patternEntry.Note = this.ParseNoteFromPatternData(patternOffset);
+        patternEntry.SampleNumber = this.ParseSampleNumberFromPatternData(
+          patternOffset
+        );
+
+        // TODO: Get the other pattern entry values and build them into four channels
+        // into a pattern.
+
+        // Build the pattern entries
+        channel.PatternEntries = new Array<ProTrackerPatternEntry>(64);
+        channel.PatternEntries[0] = patternEntry;
+
+        // Build the channels
+        pattern.Channels = new Array<ProTrackerChannel>(4);
+        pattern.Channels[0] = channel;
+
+        // Add this pattern to the collection
+        patterns[0] = pattern;
+      }
+      console.log(patterns[0].Channels[0].PatternEntries[0].Note);
+      console.log(patterns[0].Channels[0].PatternEntries[0].SampleNumber);
 
       let patternEntries = this.RawModuleBytes.slice(
         patternOffset,
@@ -120,7 +109,7 @@ namespace Cognition.Audio {
 
       // Get first pattern entry values
       let firstNote = ((patternEntries[0] & 0x0f) << 8) | patternEntries[1];
-      firstNote = BasePeriodTable.indexOf(firstNote);
+      firstNote = ProTrackerPeriodTable.indexOf(firstNote);
       firstNote = firstNote % 12 | ((Math.floor(firstNote / 12) + 2) << 4);
       console.log("First note value should be 55: " + firstNote);
 
@@ -133,7 +122,7 @@ namespace Cognition.Audio {
 
       // Get third pattern entry values
       let thirdNote = ((patternEntries[8] & 0x0f) << 8) | patternEntries[9];
-      thirdNote = BasePeriodTable.indexOf(thirdNote);
+      thirdNote = ProTrackerPeriodTable.indexOf(thirdNote);
       thirdNote = thirdNote % 12 | ((Math.floor(thirdNote / 12) + 2) << 4);
       console.log("Third note value should be 71: " + thirdNote);
 
@@ -146,7 +135,7 @@ namespace Cognition.Audio {
 
       // Get fourth pattern entry values
       let fourthNote = ((patternEntries[12] & 0x0f) << 8) | patternEntries[13];
-      fourthNote = BasePeriodTable.indexOf(fourthNote);
+      fourthNote = ProTrackerPeriodTable.indexOf(fourthNote);
       fourthNote = fourthNote % 12 | ((Math.floor(fourthNote / 12) + 2) << 4);
       console.log("Fourth note value should be 50: " + fourthNote);
 
@@ -235,7 +224,7 @@ namespace Cognition.Audio {
         // Let's just deal with the "M.K." type at the moment. We WILL need to
         // handle others but let's build this one step at a time.
         case "M.K.":
-          this.Module.Channels = new Array<number>(4);
+          this.Module.Channels = 4;
           return true;
         default:
           return false;
@@ -258,6 +247,24 @@ namespace Cognition.Audio {
     private ParseIntegerFromWord(offset: number): number {
       let bytes = this.RawModuleBytes.slice(offset, offset + 2);
       return (bytes[0] * 256 + bytes[1]) * 2;
+    }
+
+    // TODO: Explain what this is doing to get the note
+    private ParseNoteFromPatternData(offset: number): number {
+      let noteValue =
+        ((this.RawModuleBytes[offset] & 0x0f) << 8) |
+        this.RawModuleBytes[offset + 1];
+      let periodKey = ProTrackerPeriodTable.indexOf(noteValue);
+
+      return periodKey % 12 | ((Math.floor(periodKey / 12) + 2) << 4);
+    }
+
+    // TODO: Explain what this is doing to get the sample number
+    private ParseSampleNumberFromPatternData(offset: number): number {
+      return (
+        (this.RawModuleBytes[offset] & 0xf0) |
+        (this.RawModuleBytes[offset + 2] >> 4)
+      );
     }
   }
 }

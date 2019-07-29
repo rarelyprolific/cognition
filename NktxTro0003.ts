@@ -16,7 +16,7 @@ class NktxTro0003 {
     var modplayer = new Protracker();
 
     // Load the module
-    var encodedModule = window.atob(PostureSliding);
+    var encodedModule = window.atob(Lite13Module);
 
     // Decode the module back from base64 into a byte array
     var moduleLength = encodedModule.length;
@@ -30,7 +30,7 @@ class NktxTro0003 {
     this.module = moduleParser.Parse(moduleBytes);
     console.log("SongLength: " + this.module.SongLength);
     console.log("NumberOfPatterns: " + this.module.NumberOfPatterns);
-    console.log("ChannelCount: " + this.module.Channels.length);
+    console.log("ChannelCount: " + this.module.Channels);
     console.log("Position[3]: " + this.module.SongPositions[3]);
     console.log("Position[4]: " + this.module.SongPositions[4]);
     console.log("Position[5]: " + this.module.SongPositions[5]);
