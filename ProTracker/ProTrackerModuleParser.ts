@@ -63,6 +63,11 @@ namespace Cognition.Audio {
         patternEntry.SampleNumber = this.ParseSampleNumberFromPatternData(
           patternOffset
         );
+        patternEntry.Volume = this.ParseVolumeFromPatternData(patternOffset);
+        patternEntry.CommandCode = this.ParseCommandCodeFromPatternData(
+          patternOffset
+        );
+        patternEntry.Data = this.ParseDataFromPatternData(patternOffset);
 
         // TODO: Get the other pattern entry values and build them into four channels
         // into a pattern.
@@ -80,6 +85,9 @@ namespace Cognition.Audio {
       }
       console.log(patterns[0].Channels[0].PatternEntries[0].Note);
       console.log(patterns[0].Channels[0].PatternEntries[0].SampleNumber);
+      console.log(patterns[0].Channels[0].PatternEntries[0].Volume);
+      console.log(patterns[0].Channels[0].PatternEntries[0].CommandCode);
+      console.log(patterns[0].Channels[0].PatternEntries[0].Data);
 
       let patternEntries = this.RawModuleBytes.slice(
         patternOffset,
@@ -268,6 +276,22 @@ namespace Cognition.Audio {
         (this.RawModuleBytes[offset] & 0xf0) |
         (this.RawModuleBytes[offset + 2] >> 4)
       );
+    }
+
+    // TODO: Explain what this is doing to get the volume
+    private ParseVolumeFromPatternData(offset: number): number {
+      // At the moment I think we just always use 255. Check this!
+      return 255;
+    }
+
+    // TODO: Explain what this is doing to get the command code
+    private ParseCommandCodeFromPatternData(offset: number): number {
+      return this.RawModuleBytes[offset + 2] & 0x0f;
+    }
+
+    // TODO: Explain what this is doing to get the data
+    private ParseDataFromPatternData(offset: number): number {
+      return this.RawModuleBytes[offset + 3];
     }
   }
 }
