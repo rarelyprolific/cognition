@@ -36,63 +36,59 @@ namespace Cognition.Audio {
       return this.Module;
     }
 
+    // There are 256 pattern entries in a pattern (64 positions across 4 channels)
+    // The information in each pattern entry in stored across 4 bytes, so each
+    //     pattern is 1024 bytes in length.
+    // Each pattern entry has five distinct values (as above) we need to parse
+    //     out. So our unpacked array will be 1280 bytes (64 pos*4 channels*5 values)
     private GetPatterns(): Array<ProTrackerPattern> {
-      // We have already calculated the number of patterns when getting song positions
-      let patterns = new Array<ProTrackerPattern>(this.Module.NumberOfPatterns);
-
-      // TODO: We still need to get the pattern information.
       // The pattern information starts at offset 1084.
       let patternOffset = 1084;
 
-      //patterns[0] = new ProTrackerPattern();
-      //patterns[0].Channels = new Array<ProTrackerChannel>(4);
-
-      // There are 256 pattern entries in a pattern (64 positions across 4 channels)
-      // The information in each pattern entry in stored across 4 bytes, so each
-      //     pattern is 1024 bytes in length.
-      // Each pattern entry has five distinct values (as above) we need to parse
-      //     out. So our unpacked array will be 1280 bytes (64 pos*4 channels*5 values)
+      // We have already calculated the number of patterns when getting song positions
+      let patterns = new Array<ProTrackerPattern>(this.Module.NumberOfPatterns);
 
       for (let p = 0; p < patterns.length; p++) {
         let pattern = new ProTrackerPattern();
-        let channel = new ProTrackerChannel();
-        let patternEntry = new ProTrackerPatternEntry();
+        pattern.Channels = new Array<ProTrackerChannel>();
 
-        // Get values
-        patternEntry.Note = this.ParseNoteFromPatternData(patternOffset);
-        patternEntry.SampleNumber = this.ParseSampleNumberFromPatternData(
-          patternOffset
-        );
-        patternEntry.Volume = this.ParseVolumeFromPatternData(patternOffset);
-        patternEntry.CommandCode = this.ParseCommandCodeFromPatternData(
-          patternOffset
-        );
-        patternEntry.Data = this.ParseDataFromPatternData(patternOffset);
+        // Builds the channels with pattern entries
+        for (let c = 0; c < this.Module.Channels; c++) {
+          pattern.Channels[c] = new ProTrackerChannel();
+          pattern.Channels[c].PatternEntries = new Array<
+            ProTrackerPatternEntry
+          >();
+        }
 
-        // TODO: Get the other pattern entry values and build them into four channels
-        // into a pattern.
+        // Populate the pattern
+        for (let pe = 0; pe < 64; pe++) {
+          for (let c = 0; c < this.Module.Channels; c++) {
+            let patternEntry = new ProTrackerPatternEntry();
 
-        // Build the pattern entries
-        channel.PatternEntries = new Array<ProTrackerPatternEntry>(64);
-        channel.PatternEntries[0] = patternEntry;
+            // Get values
+            patternEntry.Note = this.ParseNoteFromPatternData(patternOffset);
+            patternEntry.SampleNumber = this.ParseSampleNumberFromPatternData(
+              patternOffset
+            );
+            patternEntry.Volume = this.ParseVolumeFromPatternData(
+              patternOffset
+            );
+            patternEntry.CommandCode = this.ParseCommandCodeFromPatternData(
+              patternOffset
+            );
+            patternEntry.Data = this.ParseDataFromPatternData(patternOffset);
 
-        // Build the channels
-        pattern.Channels = new Array<ProTrackerChannel>(4);
-        pattern.Channels[0] = channel;
+            pattern.Channels[c].PatternEntries[pe] = patternEntry;
+            patternOffset += 4;
+          }
+        }
 
         // Add this pattern to the collection
-        patterns[0] = pattern;
+        patterns[p] = pattern;
       }
-      console.log(patterns[0].Channels[0].PatternEntries[0].Note);
-      console.log(patterns[0].Channels[0].PatternEntries[0].SampleNumber);
-      console.log(patterns[0].Channels[0].PatternEntries[0].Volume);
-      console.log(patterns[0].Channels[0].PatternEntries[0].CommandCode);
-      console.log(patterns[0].Channels[0].PatternEntries[0].Data);
+      console.log(patterns);
 
-      let patternEntries = this.RawModuleBytes.slice(
-        patternOffset,
-        patternOffset + 17
-      );
+      let patternEntries = this.RawModuleBytes.slice(1084, 1084 + 17);
       console.log("Pattern entries: " + patternEntries);
 
       // Each pattern entry has five values:
@@ -119,40 +115,118 @@ namespace Cognition.Audio {
       let firstNote = ((patternEntries[0] & 0x0f) << 8) | patternEntries[1];
       firstNote = ProTrackerPeriodTable.indexOf(firstNote);
       firstNote = firstNote % 12 | ((Math.floor(firstNote / 12) + 2) << 4);
-      console.log("First note value should be 55: " + firstNote);
+      console.log(
+        "First note value should be 55: " +
+          firstNote +
+          " -> " +
+          patterns[0].Channels[0].PatternEntries[0].Note
+      );
 
       let firstSampleNumber =
         (patternEntries[0] & 0xf0) | (patternEntries[2] >> 4);
-      console.log("First sample number should be 11: " + firstSampleNumber);
+      console.log(
+        "First sample number should be 11: " +
+          firstSampleNumber +
+          " -> " +
+          patterns[0].Channels[0].PatternEntries[0].SampleNumber
+      );
       let firstCommandValue = patternEntries[2] & 0x0f;
-      console.log("First command value should be 15: " + firstCommandValue);
-      console.log("First data value should be 5: " + patternEntries[3]);
+      console.log(
+        "First command value should be 15: " +
+          firstCommandValue +
+          " -> " +
+          patterns[0].Channels[0].PatternEntries[0].CommandCode
+      );
+      console.log(
+        "First data value should be 5: " +
+          patternEntries[3] +
+          " -> " +
+          patterns[0].Channels[0].PatternEntries[0].Data
+      );
+
+      // Get second note values
+      console.log(
+        "Second note value should be 255: " +
+          patterns[0].Channels[0].PatternEntries[1].Note
+      );
+      console.log(
+        "Second sample number should be 0: " +
+          patterns[0].Channels[0].PatternEntries[1].SampleNumber
+      );
+      console.log(
+        "Second command value should be 0: " +
+          patterns[0].Channels[0].PatternEntries[1].CommandCode
+      );
+      console.log(
+        "Second data value should be 0: " +
+          patterns[0].Channels[0].PatternEntries[1].Data
+      );
 
       // Get third pattern entry values
       let thirdNote = ((patternEntries[8] & 0x0f) << 8) | patternEntries[9];
       thirdNote = ProTrackerPeriodTable.indexOf(thirdNote);
       thirdNote = thirdNote % 12 | ((Math.floor(thirdNote / 12) + 2) << 4);
-      console.log("Third note value should be 71: " + thirdNote);
+      console.log(
+        "Third note value should be 71: " +
+          thirdNote +
+          " -> " +
+          patterns[0].Channels[2].PatternEntries[0].Note
+      );
 
       let thirdSampleNumber =
         (patternEntries[8] & 0xf0) | (patternEntries[10] >> 4);
-      console.log("Third sample number should be 10: " + thirdSampleNumber);
+      console.log(
+        "Third sample number should be 10: " +
+          thirdSampleNumber +
+          " -> " +
+          patterns[0].Channels[2].PatternEntries[0].SampleNumber
+      );
       let thirdCommandValue = patternEntries[10] & 0x0f;
-      console.log("Third command value should be 2: " + thirdCommandValue);
-      console.log("Third data value should be 15: " + patternEntries[11]);
+      console.log(
+        "Third command value should be 2: " +
+          thirdCommandValue +
+          " -> " +
+          patterns[0].Channels[2].PatternEntries[0].CommandCode
+      );
+      console.log(
+        "Third data value should be 15: " +
+          patternEntries[11] +
+          " -> " +
+          patterns[0].Channels[2].PatternEntries[0].Data
+      );
 
       // Get fourth pattern entry values
       let fourthNote = ((patternEntries[12] & 0x0f) << 8) | patternEntries[13];
       fourthNote = ProTrackerPeriodTable.indexOf(fourthNote);
       fourthNote = fourthNote % 12 | ((Math.floor(fourthNote / 12) + 2) << 4);
-      console.log("Fourth note value should be 50: " + fourthNote);
+      console.log(
+        "Fourth note value should be 50: " +
+          fourthNote +
+          " -> " +
+          patterns[0].Channels[3].PatternEntries[0].Note
+      );
 
       let fourthSampleNumber =
         (patternEntries[12] & 0xf0) | (patternEntries[14] >> 4);
-      console.log("Fourth sample number should be 5: " + fourthSampleNumber);
+      console.log(
+        "Fourth sample number should be 5: " +
+          fourthSampleNumber +
+          " -> " +
+          patterns[0].Channels[3].PatternEntries[0].SampleNumber
+      );
       let fourthCommandValue = patternEntries[14] & 0x0f;
-      console.log("Fourth command value should be 10: " + fourthCommandValue);
-      console.log("Fourth data value should be 7: " + patternEntries[15]);
+      console.log(
+        "Fourth command value should be 10: " +
+          fourthCommandValue +
+          " -> " +
+          patterns[0].Channels[3].PatternEntries[0].CommandCode
+      );
+      console.log(
+        "Fourth data value should be 7: " +
+          patternEntries[15] +
+          " -> " +
+          patterns[0].Channels[3].PatternEntries[0].Data
+      );
 
       return patterns;
     }
@@ -267,7 +341,8 @@ namespace Cognition.Audio {
         this.RawModuleBytes[offset + 1];
       let periodKey = ProTrackerPeriodTable.indexOf(noteValue);
 
-      return periodKey % 12 | ((Math.floor(periodKey / 12) + 2) << 4);
+      let note = periodKey % 12 | ((Math.floor(periodKey / 12) + 2) << 4);
+      return note > 0 ? note : 255;
     }
 
     // TODO: Explain what this is doing to get the sample number
