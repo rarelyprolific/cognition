@@ -8,7 +8,9 @@ some 2d old skool demo effect fing
 
 ## NEXT PRIORITIES
 
-- Figure out module replaying: What we want to do is use Firehawk's replayer but wrap the usage of it inside a Cognition music class of some kind. Initially we probably only need to start the mod playing on init and stop it at the end. In the future, we could expose channel and player information into the render loop so we could sync effects but.. Let's start simple!
+- ~~Figure out module replaying: What we want to do is use Firehawk's replayer but wrap the usage of it inside a Cognition music class of some kind. Initially we probably only need to start the mod playing on init and stop it at the end. In the future, we could expose channel and player information into the render loop so we could sync effects but.. Let's start simple!~~
+- ProTrackerModuleParser _probably_ works well enough now.. Let's try and write some web audio API code to play the module and see how far we get. Figure out the specifics of how to create an **AudioContext** and feed an audio stream into it via the **onaudioprocess** event. Analyse the **mix** functions in Firehawk's replayer code to figure out how to do this. We probably want to end up with the logic to do this in a ProTrackerModulePlayer class.
+- ProTrackerModuleParser is a bit of a mess and still has loads of debug information in it. We need to get this out and, preferably, put into unit tests so we can verify it all works as intended. **Investigate using Jest as a possible test runner!**
 - ~~We may want two text print/writer implementations: One to just render a block of static text and a second one for funkier text writer effects.~~ **DONE** But a few TODOs to clear up.
 - Add a simple "ImageDisplay" ICognitionEffect to show an image for NKX logos.
 
