@@ -16,15 +16,13 @@ namespace Cognition {
       fontCharacterWidth: number,
       fontCharacterHeight: number,
       scrollFromRightXPosition: number,
-      scrollToLeftXPosition: number
+      scrollToLeftXPosition: number,
     ) {
       // Bind the "screen" to the canvas context
       this.screen = displayContext;
 
       // Load the bitmap font from a HTML IMG element in the DOM
-      this.bitmapFont = <HTMLImageElement>(
-        document.getElementById(bitmapFontImageHtmlElementId)
-      );
+      this.bitmapFont = document.getElementById(bitmapFontImageHtmlElementId) as HTMLImageElement;
 
       // Specify the dimensions of characters in the bitmap font
       this.fontCharacterWidth = fontCharacterWidth;
@@ -43,11 +41,7 @@ namespace Cognition {
       let xPositionOffset = 0;
 
       for (let i = 0; i < textToPrint.length; i++) {
-        this.drawCharacter(
-          textToPrint.charAt(i),
-          this.currentXPosition + xPositionOffset,
-          yPosition
-        );
+        this.drawCharacter(textToPrint.charAt(i), this.currentXPosition + xPositionOffset, yPosition);
 
         xPositionOffset += this.fontCharacterWidth;
       }
@@ -65,28 +59,20 @@ namespace Cognition {
       }
     }
 
-    public drawCharacter(
-      characterToPrint: string,
-      xPosition: number,
-      yPosition: number
-    ) {
+    public drawCharacter(characterToPrint: string, xPosition: number, yPosition: number) {
       // Get the index of the character in the bitmap font based on the
       // ASCII character code (minus the first 32 ASCII characters)
-      let characterTileIndex: number = characterToPrint.charCodeAt(0) - 32;
+      const characterTileIndex: number = characterToPrint.charCodeAt(0) - 32;
 
       // Calculate which row of the bitmap font this character is on
-      let characterOnRow: number = Math.floor(
-        characterTileIndex / this.charactersPerRow
-      );
+      const characterOnRow: number = Math.floor(characterTileIndex / this.charactersPerRow);
 
       // Calculate the xPosition of this character in the bitmap font
-      let xPositionOfCharacterInBitmapFont: number =
-        characterTileIndex * this.fontCharacterWidth -
-        this.charactersPerRow * this.fontCharacterWidth * characterOnRow;
+      const xPositionOfCharacterInBitmapFont: number =
+        characterTileIndex * this.fontCharacterWidth - this.charactersPerRow * this.fontCharacterWidth * characterOnRow;
 
       // Calculate the yPosition of this character in the bitmap font
-      let yPositionOfCharacterInBitmapFont: number =
-        characterOnRow * this.fontCharacterHeight;
+      const yPositionOfCharacterInBitmapFont: number = characterOnRow * this.fontCharacterHeight;
 
       // Render this character to the screen
       this.screen.drawImage(
@@ -98,7 +84,7 @@ namespace Cognition {
         xPosition,
         yPosition,
         this.fontCharacterWidth,
-        this.fontCharacterHeight
+        this.fontCharacterHeight,
       );
     }
   }

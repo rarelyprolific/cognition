@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
-    "semicolon": [true, "always", "ignore-bound-class-methods"]
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "no-namespace": false
   }
 }
