@@ -2,6 +2,9 @@ class NktxTro0005 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
   private textPrinter: Cognition.ICognitionEffect;
   private scroller: Cognition.ICognitionEffect;
+  private moire: Cognition.ICognitionEffect;
+
+  private moireValue: number = 0;
 
   public run = () => {
     // Set up the textprinter
@@ -11,6 +14,10 @@ class NktxTro0005 {
     // Set up the scroller
     this.scroller = new Cognition.Scroller();
     this.scroller.initialize(this.cognition.displayContext, "font", 16, 16, this.cognition.displayWidth, 0);
+
+    // Set up moire
+    this.moire = new Cognition.Moire();
+    this.moire.initialize(this.cognition.displayContext, 10, 30, 780, 560);
 
     // Play music
     BassoonTracker.init(true);
@@ -40,6 +47,19 @@ class NktxTro0005 {
         "VIDERERE, NON ESSES TUI SIMILIS",
       5,
     );
+
+    // Run the moire
+    if (this.moireValue >= 50000) {
+      this.moireValue = 0;
+    }
+    this.moire.draw(this.moireValue);
+    this.moireValue += 50;
+
+    // Draw a box for the text
+    this.cognition.displayContext.beginPath();
+    this.cognition.displayContext.fillStyle = "#000077";
+    this.cognition.displayContext.fillRect(638, 547, 150, 42);
+    this.cognition.displayContext.stroke();
 
     // Run the text printer
     this.textPrinter.draw("NEOKORTEX", 642, 550);
