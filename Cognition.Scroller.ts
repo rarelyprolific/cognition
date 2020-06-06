@@ -54,7 +54,9 @@ namespace Cognition {
       // into the textToPrint string
       this.currentXPosition -= 3;
 
-      if (this.currentXPosition < this.configuredScrollToLeftXPosition) {
+      // TODO: We can pre-calculate textToPrint.length * this.fontCharacterWidth at the start instead of doing it on
+      // the fly here. (This just calculates where to wrap when the scroller has gone off the left side of the screen.)
+      if (this.currentXPosition < this.configuredScrollToLeftXPosition - textToPrint.length * this.fontCharacterWidth) {
         this.currentXPosition = this.configuredScrollFromRightXPosition;
       }
     }
