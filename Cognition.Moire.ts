@@ -22,7 +22,7 @@ namespace Cognition {
       this.height = height;
     }
 
-    public draw(t: number) {
+    public draw(t: number, red: number, green: number, blue: number) {
       const dest: ImageData = this.screen.getImageData(0, 0, this.width, this.height);
       const time: number = t / 1000;
 
@@ -40,9 +40,9 @@ namespace Cognition {
           const dx2: number = (x - cx2) * (x - cx2);
           const shade: number = (((Math.sqrt(dx + dy) ^ Math.sqrt(dx2 + dy2)) >> 4) & 1) * 255;
 
-          dest.data[destOfs++] = shade; // r
-          dest.data[destOfs++] = shade; // g
-          dest.data[destOfs++] = shade; // b
+          dest.data[destOfs++] = shade + red; // r
+          dest.data[destOfs++] = shade + green; // g
+          dest.data[destOfs++] = shade + blue; // b
           dest.data[destOfs++] = 0xff; // a
         }
       }

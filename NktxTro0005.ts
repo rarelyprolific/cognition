@@ -5,6 +5,8 @@ class NktxTro0005 {
   private moire: Cognition.ICognitionEffect;
 
   private moireValue: number = 0;
+  private moireColour: number = 0;
+  private moireColourChangeDirection: number = 1;
 
   public run = () => {
     // Set up the textprinter
@@ -52,8 +54,29 @@ class NktxTro0005 {
     if (this.moireValue >= 50000) {
       this.moireValue = 0;
     }
-    this.moire.draw(this.moireValue);
-    this.moireValue += 50;
+
+    if (this.moireColour >= 100) {
+      this.moireColourChangeDirection = -1;
+    }
+
+    if (this.moireColour <= 0) {
+      this.moireColourChangeDirection = 1;
+    }
+
+    this.moire.draw(this.moireValue, this.moireColour - 10, this.moireColour + 10, this.moireColour + 20);
+    this.moireValue += 20;
+    this.moireColour += this.moireColourChangeDirection;
+
+    // Draw an image with text
+    const canIhavesomemoreimage = document.getElementById("canIhavesomemoire") as HTMLImageElement;
+    this.cognition.displayContext.drawImage(canIhavesomemoreimage, 0, 320);
+
+    this.cognition.displayContext.beginPath();
+    this.cognition.displayContext.fillStyle = "#000000";
+    this.cognition.displayContext.fillRect(150, 510, 390, 55);
+    this.cognition.displayContext.stroke();
+    this.textPrinter.draw("PLEASE SIR..", 160, 520);
+    this.textPrinter.draw("CAN I HAVE SOME MOIRE?", 180, 540);
 
     // Draw a box for the text
     this.cognition.displayContext.beginPath();
