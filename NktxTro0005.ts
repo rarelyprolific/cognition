@@ -1,6 +1,8 @@
 class NktxTro0005 {
   private cognition: Cognition.Core = new Cognition.Core("screen");
   private textPrinter: Cognition.ICognitionEffect;
+  private textWriter: Cognition.ICognitionEffect;
+  private textWriterPages: string[] = new Array();
   private scroller: Cognition.ICognitionEffect;
   private moire: Cognition.ICognitionEffect;
 
@@ -17,13 +19,22 @@ class NktxTro0005 {
     this.scroller = new Cognition.Scroller();
     this.scroller.initialize(this.cognition.displayContext, "font", 16, 16, this.cognition.displayWidth, 0);
 
+    // Set up the textwriter
+    this.textWriterPages.push("NEOKORTEX PRESENTS\n\n   A SHORT INTRO");
+    this.textWriterPages.push("THIS IS THE SECOND PAGE\n\nI NEED SOMETHING\nINTERESTING TO WRITE");
+    this.textWriterPages.push("BUT I'M ON THE THIRD PAGE\nNOW AND HAVE NO INSPIRATION");
+    this.textWriterPages.push("OH WELL!\n\nLET'S CALL IT THE END THEN!\n\n\n    WRAP!");
+
+    this.textWriter = new Cognition.TextWriter();
+    this.textWriter.initialize(this.cognition.displayContext, "font", 16, 16, 30);
+
     // Set up moire
     this.moire = new Cognition.Moire();
     this.moire.initialize(this.cognition.displayContext, 10, 30, 780, 560);
 
     // Play music
     BassoonTracker.init(true);
-    BassoonTracker.load("../assets/Monday.mod", true);
+    BassoonTracker.load("../assets/blastyourbrain.mod", true);
 
     this.loop();
   };
@@ -40,13 +51,9 @@ class NktxTro0005 {
 
     // Run the scroller
     this.scroller.draw(
-      "WELCOME TO THE SCROLLER!!!! LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NAM BONUM EX QUO APPELLATUM " +
-        "SIT, NESCIO, PRAEPOSITUM EX EO CREDO, QUOD PRAEPONATUR ALIIS. AT ENIM, QUA IN VITA EST ALIQUID MALI, EA BEATA ESSE NON " +
-        "POTEST. ILLA VIDEAMUS, QUAE A TE DE AMICITIA DICTA SUNT. QUAE QUIDEM SAPIENTES SEQUUNTUR DUCE NATURA TAMQUAM VIDENTES " +
-        "AGE SANE, INQUAM. DUO REGES: CONSTRUCTIO INTERRETE.    UTINAM QUIDEM DICERENT ALIUM ALIO BEATIOREM! IAM RUINAS VIDERES. " +
-        "NOS COMMODIUS AGIMUS. IMMO ALIO GENERE; EORUM ENIM OMNIUM MULTA PRAETERMITTENTIUM, DUM ELIGANT ALIQUID, QUOD SEQUANTUR, " +
-        "QUASI CURTA SENTENTIA; ITAQUE HIC IPSE IAM PRIDEM EST REIECTUS; QUODSI VULTUM TIBI, SI INCESSUM FINGERES, QUO GRAVIOR " +
-        "VIDERERE, NON ESSES TUI SIMILIS",
+      "HEY THERE! THIS IS JUST SOME PROTOTYPE BITS SLUNG TOGETHER.. THERE ISN'T EVEN A TURD HERE READY " +
+        "TO POLISH YET!     NEOKORTEX MEMBERS LIST : FUZION (ASCII ART, ORGANISER) - ZYX! (NO IDEA) - DARKUS (C64 GRAPHICS) - " +
+        "OBVIOUSDISASTER (CODE AND GRAPHICS)...  TEXT WRAPS...    ",
       5,
     );
 
@@ -66,6 +73,13 @@ class NktxTro0005 {
     this.moire.draw(this.moireValue, this.moireColour - 10, this.moireColour + 10, this.moireColour + 20);
     this.moireValue += 20;
     this.moireColour += this.moireColourChangeDirection;
+
+    // Run the text writer
+    this.cognition.displayContext.beginPath();
+    this.cognition.displayContext.fillStyle = "#4B0082";
+    this.cognition.displayContext.fillRect(330, 100, 450, 120);
+    this.cognition.displayContext.stroke();
+    this.textWriter.draw(this.textWriterPages, 340, 110, 5);
 
     // Draw an image with text
     const canIhavesomemoreimage = document.getElementById("canIhavesomemoire") as HTMLImageElement;
