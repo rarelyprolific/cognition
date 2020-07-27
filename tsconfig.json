@@ -1,8 +1,8 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "removeComments": true,
-        "outDir": "built"
-    },
-    "compileOnSave": true
+  "compilerOptions": {
+    "target": "es6",
+    "removeComments": true,
+    "outDir": "built"
+  },
+  "compileOnSave": true
 }
