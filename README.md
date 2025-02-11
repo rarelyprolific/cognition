@@ -1,8 +1,12 @@
-# Cognition
+# cognition
 
 some 2d old skool demo effect fing
 
-## WHERE SHALL WE START? (i.e. what can we realistically achieve without it taking a decade and us giving up in the process! :p)
+## STOP PRESS - 2025 REFURBISHMENT IN PROGRESS - STOP PRESS
+
+- Set up a new Vite/TypeScript project.
+
+## OLD STUFF BELOW (TODO: SORT IT LATER!)
 
 - Make an "old skool" style intro with a starfield and text writer which plays a Pro/FastTracker module.
 
