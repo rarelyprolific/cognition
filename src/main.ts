@@ -25,5 +25,4 @@
 
 import { NktxIntro } from "./nktx-intro";
 
-let intro = new NktxIntro();
-intro.run();
+NktxIntro.run();
