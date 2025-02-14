@@ -1,6 +1,6 @@
-import { Cognition } from "./Cognition";
-import { ICognitionEffect } from "./effects/ICognitionEffect";
-import { Starfield } from "./effects/Starfield";
+import { Cognition } from "./cognition";
+import { ICognitionEffect } from "./effects/cognition-effect";
+import { Starfield } from "./effects/starfield";
 
 export class NktxIntro {
   // Initialise cognition and bind to '#screen' canvas element in HTML (change to pass canvas element id in later?)

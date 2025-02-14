@@ -1,4 +1,4 @@
-import { ICognitionEffect } from "./ICognitionEffect";
+import { ICognitionEffect } from "./cognition-effect";
 
 interface Star {
   xPosition: number;
