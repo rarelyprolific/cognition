@@ -1,32 +1,51 @@
 import { Cognition } from "./cognition";
 import { Starfield } from "./effects/starfield";
 
+/**
+ * NktxIntro - A simple demo to show how to use the Cognition library.
+ */
 export class NktxIntro {
-  // Initialise cognition and bind to '#screen' canvas element in HTML (change to pass canvas element id in later?)
-  private static cognition: Cognition = new Cognition("screen");
+  private static cognition: Cognition;
+  private static starfield: Starfield;
 
-  private static starfield: Starfield = new Starfield(
-    this.cognition.displayWidth,
-    this.cognition.displayHeight
-  );
+  /**
+   * Start the demo.
+   * @param canvasHtmlElement Target <canvas> HTML element to render the demo into.
+   */
+  public static start = (htmlElement: HTMLElement | null) => {
+    this.cognition = new Cognition(htmlElement);
 
-  public static run = () => {
-    // Perform initialisation
-    this.starfield.initialise(100, 4);
-
+    this.initialiseEffects();
     this.loop();
   };
 
-  private static renderFrame() {
+  /**
+   * Main demo loop (assume 60fps or test for it).
+   */
+  public static loop = () => {
+    this.renderFrame();
+    requestAnimationFrame(this.loop);
+  };
+
+  /**
+   * Initialise effects.
+   */
+  private static initialiseEffects = () => {
+    this.starfield = new Starfield(
+      this.cognition.displayWidth,
+      this.cognition.displayHeight
+    );
+
+    this.starfield.initialise(100, 4);
+  };
+
+  /**
+   * Render a frame of the demo.
+   */
+  private static renderFrame = () => {
     this.cognition.setBackgroundColour("#010B1C");
     this.starfield.draw(this.cognition.displayContext, 4);
 
     this.cognition.displayContext.fillStyle = "#000000";
-  }
-
-  public static loop = () => {
-    // Main intro loop (assume 60fps or test for it!)
-    this.renderFrame();
-    requestAnimationFrame(this.loop);
   };
 }
