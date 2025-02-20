@@ -1,3 +1,4 @@
+import "./style.css";
 import { NktxIntro } from "./nktx-intro";
 
 /**

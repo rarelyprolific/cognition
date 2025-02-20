@@ -1,5 +1,8 @@
 import { ICognitionEffect } from "./cognition-effect";
 
+/**
+ * Represents a star in the starfield.
+ */
 interface Star {
   xPosition: number;
   yPosition: number;
@@ -9,6 +12,9 @@ interface Star {
   colour: string;
 }
 
+/**
+ * Starfield
+ */
 export class Starfield implements ICognitionEffect {
   private stars: Star[];
   public readonly displayWidth: number;
