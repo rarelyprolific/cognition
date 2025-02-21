@@ -18,8 +18,11 @@ export class Cognition {
       this.display.getContext("2d");
 
     if (!displayContext) {
-      throw new Error("Canvas not supported");
+      throw new Error("Initialisation error! Canvas not supported.");
     }
+
+    // Toggle fullscreen when user clicks canvas
+    this.display.addEventListener("click", this.setFullScreen);
 
     this.displayContext = displayContext;
     this.displayWidth = this.display.width;
@@ -33,6 +36,30 @@ export class Cognition {
   public setBackgroundColour(colour: string) {
     this.displayContext.fillStyle = colour;
     this.displayContext.fillRect(0, 0, this.displayWidth, this.displayHeight);
+  }
+
+  /**
+   * Toggles fullscreen.
+   * @param clickEvent Click event to toggle fullscreen.
+   */
+  setFullScreen(clickEvent: MouseEvent) {
+    const element = clickEvent.currentTarget as HTMLElement;
+
+    if (!document.fullscreenElement) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if ((element as any).webkitRequestFullscreen) {
+        // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
+        (element as any).webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
+        (document as any).webkitExitFullscreen();
+      }
+    }
   }
 
   /**
