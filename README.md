@@ -5,6 +5,9 @@ some 2d old skool demo effect fing
 ## STOP PRESS - 2025 REFURBISHMENT IN PROGRESS - STOP PRESS
 
 - Set up a new Vite/TypeScript project: `npm create vite@latest cognition` / `npm install`
+- Set up a devcontainer. Run from devcontainer using `npm run dev -- --host`
+
+- Devcontainer set up to be done: Ensure markdown lint is installed and prettier formats on save!
 
 ## OLD STUFF BELOW (TODO: SORT IT LATER!)
 
