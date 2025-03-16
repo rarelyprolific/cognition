@@ -2,7 +2,7 @@ import { Cognition } from "./cognition";
 import { FontPrinter } from "./effects/fontprinter";
 import { Starfield } from "./effects/starfield";
 
-import { loadImage } from "./image-loader";
+import { loadImage } from "./tools/image-loader";
 
 import fontImageFile from "/font.png";
 

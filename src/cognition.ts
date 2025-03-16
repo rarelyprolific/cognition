@@ -1,3 +1,5 @@
+import { setFullScreen } from "./tools/fullscreen-toggle";
+
 /**
  * Core cognition class which represents the "screen" of the demo hosted in a <canvas> element.
  */
@@ -22,7 +24,7 @@ export class Cognition {
     }
 
     // Toggle fullscreen when user clicks canvas
-    this.display.addEventListener("click", this.setFullScreen);
+    this.display.addEventListener("click", setFullScreen);
 
     this.displayContext = displayContext;
     this.displayWidth = this.display.width;
@@ -36,34 +38,6 @@ export class Cognition {
   public setBackgroundColour(colour: string) {
     this.displayContext.fillStyle = colour;
     this.displayContext.fillRect(0, 0, this.displayWidth, this.displayHeight);
-  }
-
-  /**
-   * Toggles fullscreen.
-   * @param clickEvent Click event to toggle fullscreen.
-   */
-  setFullScreen(clickEvent: MouseEvent) {
-    const element = clickEvent.currentTarget as HTMLElement;
-
-    if (!document.fullscreenElement) {
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } else if ((element as any).webkitRequestFullscreen) {
-        // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (element as any).webkitRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } else if ((document as any).webkitExitFullscreen) {
-        // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (document as any).webkitExitFullscreen();
-      }
-    }
   }
 
   /**
