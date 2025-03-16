@@ -21,7 +21,7 @@ export class Starfield implements ICognitionEffect {
   public readonly displayHeight: number;
 
   constructor(displayWidth: number, displayHeight: number) {
-    this.stars = new Array();
+    this.stars = [];
 
     this.displayWidth = displayWidth;
     this.displayHeight = displayHeight;
@@ -29,7 +29,7 @@ export class Starfield implements ICognitionEffect {
 
   initialise(numberOfStars: number, starfieldPlanes: number) {
     for (let sfp = 0; sfp < starfieldPlanes; sfp++) {
-      let starsInPlane: Array<Star> = new Array(numberOfStars);
+      const starsInPlane: Array<Star> = new Array(numberOfStars);
 
       for (let s = 0; s < numberOfStars; s++) {
         starsInPlane[s] = {} as Star;
@@ -53,7 +53,7 @@ export class Starfield implements ICognitionEffect {
     //  * On each frame, decrement the x co-ord of each star (scroll left)
     //  * If x co-ord is zero, set x co-ord to this.display.width and random y co-ord (new star)
 
-    for (let i in this.stars) {
+    for (const i in this.stars) {
       // Draw the star
       screen.fillStyle = this.stars[i].colour;
       screen.fillRect(

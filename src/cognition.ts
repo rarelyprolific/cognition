@@ -48,15 +48,19 @@ export class Cognition {
     if (!document.fullscreenElement) {
       if (element.requestFullscreen) {
         element.requestFullscreen();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } else if ((element as any).webkitRequestFullscreen) {
         // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (element as any).webkitRequestFullscreen();
       }
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } else if ((document as any).webkitExitFullscreen) {
         // Safari probably doesn't support Fullscreen API so this probably works as an alternative.. maybe! :)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (document as any).webkitExitFullscreen();
       }
     }
@@ -77,8 +81,7 @@ export class Cognition {
 
     if (!(htmlElement instanceof HTMLCanvasElement)) {
       throw new Error(
-        `Initialisation error! Target element must be <canvas>. #${
-          htmlElement.id
+        `Initialisation error! Target element must be <canvas>. #${htmlElement.id
         } element is <${htmlElement.tagName.toLowerCase()}>.`
       );
     }

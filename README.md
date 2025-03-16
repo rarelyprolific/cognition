@@ -7,8 +7,6 @@ some 2d old skool demo effect fing
 - Set up a new Vite/TypeScript project: `npm create vite@latest cognition` / `npm install`
 - Set up a devcontainer. Run from devcontainer using `npm run dev -- --host`
 
-- Devcontainer set up to be done: Ensure markdown lint is installed and prettier formats on save!
-
 ## OLD STUFF BELOW (TODO: SORT IT LATER!)
 
 - Make an "old skool" style intro with a starfield and text writer which plays a Pro/FastTracker module.
