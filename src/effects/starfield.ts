@@ -47,7 +47,7 @@ export class Starfield implements ICognitionEffect {
     }
   }
 
-  draw(displayContext: CanvasRenderingContext2D, speed: number) {
+  draw(screen: CanvasRenderingContext2D, speed: number) {
     // TODO: Generate the starfield
     //  * Generate X number of stars within the screen area at random x and y co-ords
     //  * On each frame, decrement the x co-ord of each star (scroll left)
@@ -55,8 +55,8 @@ export class Starfield implements ICognitionEffect {
 
     for (let i in this.stars) {
       // Draw the star
-      displayContext.fillStyle = this.stars[i].colour;
-      displayContext.fillRect(
+      screen.fillStyle = this.stars[i].colour;
+      screen.fillRect(
         this.stars[i].xPosition,
         this.stars[i].yPosition,
         this.stars[i].height,

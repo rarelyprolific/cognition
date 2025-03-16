@@ -9,7 +9,7 @@ export interface ICognitionEffect {
 
   /**
    * Draw a frame of the effect.
-   * @param displayContext 2D rendering context of the canvas
+   * @param screen 2D rendering context of the canvas which represents a screen to render a demo into.
    */
-  draw(displayContext: CanvasRenderingContext2D, ...params: any[]): void;
+  draw(screen: CanvasRenderingContext2D, ...params: any[]): void;
 }
