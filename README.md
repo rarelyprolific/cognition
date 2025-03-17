@@ -7,6 +7,12 @@ some 2d old skool demo effect fing
 - Set up a new Vite/TypeScript project: `npm create vite@latest cognition` / `npm install`
 - Set up a devcontainer. Run from devcontainer using `npm run dev -- --host`
 
+## STILL TODO
+
+- Figure out module replayer.
+- Phase out `ICognitionEffect`. Do I just need a constructor and/or deferred initialise step for effects? Do I just need a `draw()` method for static screen elements
+and a `renderFrame()` method for effects?
+
 ## OLD STUFF BELOW (TODO: SORT IT LATER!)
 
 - Make an "old skool" style intro with a starfield and text writer which plays a Pro/FastTracker module.

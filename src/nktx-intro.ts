@@ -60,7 +60,5 @@ export class NktxIntro {
 
     this.fontprinter.draw(this.cognition.displayContext, "NEOKORTEX", 300, 200);
     this.fontprinter.draw(this.cognition.displayContext, "COGNITION", 300, 220);
-
-    this.cognition.displayContext.fillStyle = "#000000";
   };
 }
