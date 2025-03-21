@@ -1,6 +1,7 @@
-import { Cognition } from "./cognition";
+import { get2dDisplayContextFromCanvasElement } from "./tools/display-provider";
 import { FontPrinter } from "./effects/fontprinter";
 import { Starfield } from "./effects/starfield";
+import { setBackgroundColour } from "./tools/background-colour-setter";
 
 import { loadImage } from "./tools/image-loader";
 
@@ -10,7 +11,7 @@ import fontImageFile from "/font.png";
  * NktxIntro - A simple demo to show how to use the Cognition library.
  */
 export class NktxIntro {
-  private static cognition: Cognition;
+  private static display: CanvasRenderingContext2D;
   private static fontprinter: FontPrinter
   private static starfield: Starfield;
 
@@ -18,8 +19,9 @@ export class NktxIntro {
    * Start the demo.
    * @param canvasHtmlElement Target <canvas> HTML element to render the demo into.
    */
-  public static start = async (htmlElement: HTMLElement | null) => {
-    this.cognition = new Cognition(htmlElement);
+  public static start = async (htmlElement: HTMLElement) => {
+    this.display = get2dDisplayContextFromCanvasElement(htmlElement);
+    //this.cognition = new Cognition(htmlElement);
 
     await this.initialiseEffects();
     this.loop();
@@ -42,23 +44,20 @@ export class NktxIntro {
 
     this.fontprinter = new FontPrinter(bitmapFont, 16, 16);
 
-    this.starfield = new Starfield(
-      this.cognition.displayWidth,
-      this.cognition.displayHeight
-    );
+    this.starfield = new Starfield();
 
-    this.starfield.initialise(100, 4);
+    this.starfield.initialise(this.display, 100, 4);
   };
 
   /**
    * Render a frame of the demo.
    */
   private static renderFrame = () => {
-    this.cognition.setBackgroundColour("#010B1C");
+    setBackgroundColour(this.display, "#010B1C");
 
-    this.starfield.drawFrame(this.cognition.displayContext, 4);
+    this.starfield.drawFrame(this.display, 4);
 
-    this.fontprinter.drawText(this.cognition.displayContext, "NEOKORTEX", 300, 200);
-    this.fontprinter.drawText(this.cognition.displayContext, "COGNITION", 300, 220);
+    this.fontprinter.drawText(this.display, "NEOKORTEX", 300, 200);
+    this.fontprinter.drawText(this.display, "COGNITION", 300, 220);
   };
 }
