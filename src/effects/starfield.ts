@@ -1,5 +1,3 @@
-import { ICognitionEffect } from "./cognition-effect";
-
 /**
  * Represents a star in the starfield.
  */
@@ -15,7 +13,7 @@ interface Star {
 /**
  * Starfield
  */
-export class Starfield implements ICognitionEffect {
+export class Starfield {
   private stars: Star[];
   public readonly displayWidth: number;
   public readonly displayHeight: number;
@@ -47,7 +45,7 @@ export class Starfield implements ICognitionEffect {
     }
   }
 
-  draw(screen: CanvasRenderingContext2D, speed: number) {
+  drawFrame(screen: CanvasRenderingContext2D, speed: number) {
     // TODO: Generate the starfield
     //  * Generate X number of stars within the screen area at random x and y co-ords
     //  * On each frame, decrement the x co-ord of each star (scroll left)

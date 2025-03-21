@@ -56,9 +56,9 @@ export class NktxIntro {
   private static renderFrame = () => {
     this.cognition.setBackgroundColour("#010B1C");
 
-    this.starfield.draw(this.cognition.displayContext, 4);
+    this.starfield.drawFrame(this.cognition.displayContext, 4);
 
-    this.fontprinter.draw(this.cognition.displayContext, "NEOKORTEX", 300, 200);
-    this.fontprinter.draw(this.cognition.displayContext, "COGNITION", 300, 220);
+    this.fontprinter.drawText(this.cognition.displayContext, "NEOKORTEX", 300, 200);
+    this.fontprinter.drawText(this.cognition.displayContext, "COGNITION", 300, 220);
   };
 }

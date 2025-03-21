@@ -1,9 +1,7 @@
-import { ICognitionEffect } from "./cognition-effect";
-
 /**
  * Fontprinter - Renders a string of text from the screen using a bitmap font image
  */
-export class FontPrinter implements ICognitionEffect {
+export class FontPrinter {
 
     private charactersPerRow: number;
     private bitmapFont: HTMLImageElement;
@@ -24,7 +22,7 @@ export class FontPrinter implements ICognitionEffect {
     // Will we ever need to re-initialise an effect?
     initialise() { }
 
-    draw(screen: CanvasRenderingContext2D, textToPrint: string, xPosition: number, yPosition: number) {
+    drawText(screen: CanvasRenderingContext2D, textToPrint: string, xPosition: number, yPosition: number) {
         let xPositionOffset = 0;
 
         // Render each character of the textToPrint to the screen
