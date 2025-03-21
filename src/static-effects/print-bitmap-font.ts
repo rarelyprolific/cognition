@@ -1,7 +1,7 @@
 /**
- * Fontprinter - Renders a string of text from the screen using a bitmap font image
+ * Renders a string of text from the screen using a bitmap font image.
  */
-export class FontPrinter {
+export class PrintBitmapFont {
 
     private charactersPerRow: number;
     private bitmapFont: HTMLImageElement;

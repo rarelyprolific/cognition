@@ -1,19 +1,17 @@
-import { get2dDisplayContextFromCanvasElement } from "./tools/display-provider";
+import { get2dDisplayContextFromCanvasElement } from "./tools/get-display";
 import { setBackgroundColour } from "./tools/set-background-colour";
-
-import { FontPrinter } from "./static-effects/fontprinter";
-import { Starfield } from "./dynamic-effects/starfield";
-
-import { loadImage } from "./tools/image-loader";
-
+import { loadImage } from "./tools/load-image";
 import fontImageFile from "/font.png";
+
+import { PrintBitmapFont } from "./static-effects/print-bitmap-font";
+import { Starfield } from "./dynamic-effects/starfield";
 
 /**
  * NktxIntro - A simple demo to show how to use the Cognition library.
  */
 export class NktxIntro {
   private static display: CanvasRenderingContext2D;
-  private static fontprinter: FontPrinter
+  private static printBitmapFont: PrintBitmapFont
   private static starfield: Starfield;
 
   /**
@@ -42,7 +40,7 @@ export class NktxIntro {
     // TODO: Figure out how to gracefully fail when the image fails to load.
     const bitmapFont: HTMLImageElement = await loadImage(fontImageFile);
 
-    this.fontprinter = new FontPrinter(bitmapFont, 16, 16);
+    this.printBitmapFont = new PrintBitmapFont(bitmapFont, 16, 16);
 
     this.starfield = new Starfield();
     this.starfield.initialise(this.display, 100, 4);
@@ -56,7 +54,7 @@ export class NktxIntro {
 
     this.starfield.drawFrame(this.display, 4);
 
-    this.fontprinter.drawText(this.display, "NEOKORTEX", 300, 200);
-    this.fontprinter.drawText(this.display, "COGNITION", 300, 220);
+    this.printBitmapFont.drawText(this.display, "NEOKORTEX", 300, 200);
+    this.printBitmapFont.drawText(this.display, "COGNITION", 300, 220);
   };
 }

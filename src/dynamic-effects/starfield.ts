@@ -1,5 +1,5 @@
 /**
- * Starfield
+ * Renders a horizontally scrolling parallax starfield.
  */
 export class Starfield {
   private stars: Star[];

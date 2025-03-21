@@ -3,7 +3,7 @@
  * Toggles fullscreen.
  * @param clickEvent Click event to toggle fullscreen.
  */
-export function setFullScreen(clickEvent: MouseEvent) {
+export function toggleFullScreen(clickEvent: MouseEvent) {
     const element = clickEvent.currentTarget as HTMLElement;
 
     if (!document.fullscreenElement) {

@@ -1,4 +1,4 @@
-import { setFullScreen } from "./fullscreen-toggle";
+import { toggleFullScreen } from "./toggle-fullscreen";
 
 /**
  * Gets a 2D rendering context for an HTML CANVAS element.
@@ -14,7 +14,7 @@ export function get2dDisplayContextFromCanvasElement(canvasHtmlElement: HTMLElem
     }
 
     // Toggle fullscreen when user clicks canvas
-    canvasElement.addEventListener("click", setFullScreen);
+    canvasElement.addEventListener("click", toggleFullScreen);
 
     return displayContext;
 }
