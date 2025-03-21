@@ -1,7 +1,8 @@
 import { get2dDisplayContextFromCanvasElement } from "./tools/display-provider";
-import { FontPrinter } from "./effects/fontprinter";
-import { Starfield } from "./effects/starfield";
-import { setBackgroundColour } from "./tools/background-colour-setter";
+import { setBackgroundColour } from "./tools/set-background-colour";
+
+import { FontPrinter } from "./static-effects/fontprinter";
+import { Starfield } from "./dynamic-effects/starfield";
 
 import { loadImage } from "./tools/image-loader";
 
@@ -17,11 +18,10 @@ export class NktxIntro {
 
   /**
    * Start the demo.
-   * @param canvasHtmlElement Target <canvas> HTML element to render the demo into.
+   * @param canvasHtmlElement Target HTML CANVAS element to render the demo into.
    */
   public static start = async (htmlElement: HTMLElement) => {
     this.display = get2dDisplayContextFromCanvasElement(htmlElement);
-    //this.cognition = new Cognition(htmlElement);
 
     await this.initialiseEffects();
     this.loop();
@@ -45,7 +45,6 @@ export class NktxIntro {
     this.fontprinter = new FontPrinter(bitmapFont, 16, 16);
 
     this.starfield = new Starfield();
-
     this.starfield.initialise(this.display, 100, 4);
   };
 
