@@ -9,7 +9,6 @@ export class PrintBitmapFont {
     private fontCharacterHeight: number;
 
     constructor(bitmapFont: HTMLImageElement, fontCharacterWidth: number, fontCharacterHeight: number) {
-
         this.bitmapFont = bitmapFont;
         this.fontCharacterWidth = fontCharacterWidth;
         this.fontCharacterHeight = fontCharacterHeight;
@@ -18,11 +17,58 @@ export class PrintBitmapFont {
         this.charactersPerRow = this.bitmapFont.width / fontCharacterWidth;
     }
 
-    // TODO: Check if we need an initialise step or if we can do most of the setup in the constructor.
-    // Will we ever need to re-initialise an effect?
-    initialise() { }
+    // TODO: Pre-calc stuff if performance is an issue later.
+    // TODO: Create enums for alignment values.
 
-    drawText(screen: CanvasRenderingContext2D, textToPrint: string, xPosition: number, yPosition: number) {
+    drawAlignedText(
+        screen: CanvasRenderingContext2D,
+        textToPrint: string,
+        horizontalAlignment: string,
+        verticalAlignment: string,
+        horizontalPadding: number = 5,
+        verticalPadding: number = 5) {
+
+        let xPosition: number = 0;
+        let yPosition: number = 0;
+
+        // Calculate the width of the text to be printed
+        const textWidth: number = textToPrint.length * this.fontCharacterWidth;
+
+        // Calculate the xPosition to align the text based on the alignment parameter
+        switch (horizontalAlignment) {
+            case "left":
+                xPosition = horizontalPadding;
+                break
+            case "center":
+                xPosition = ((screen.canvas.width / 2) - (textWidth / 2)) + horizontalPadding;
+                break;
+            case "right":
+                xPosition = screen.canvas.width - textWidth - horizontalPadding;
+                break;
+        }
+
+        // Calculate the yPosition to align the text based on the alignment parameter
+        switch (verticalAlignment) {
+            case "top":
+                yPosition = verticalPadding;
+                break;
+            case "center":
+                yPosition = ((screen.canvas.height / 2) - (this.fontCharacterHeight / 2)) + verticalPadding;
+                break;
+            case "bottom":
+                yPosition = screen.canvas.height - this.fontCharacterHeight - verticalPadding;
+                break;
+        }
+
+        this.drawTextAtAbsolutePosition(screen, textToPrint, xPosition, yPosition);
+    }
+
+    drawTextAtAbsolutePosition(
+        screen: CanvasRenderingContext2D,
+        textToPrint: string,
+        xPosition: number,
+        yPosition: number) {
+
         let xPositionOffset = 0;
 
         // Render each character of the textToPrint to the screen
@@ -62,6 +108,5 @@ export class PrintBitmapFont {
             // before rendering the next character
             xPositionOffset += this.fontCharacterWidth;
         }
-
     }
 }

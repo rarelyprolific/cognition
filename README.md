@@ -10,8 +10,7 @@ some 2d old skool demo effect fing
 ## STILL TODO
 
 - Figure out module replayer.
-- Phase out `ICognitionEffect`. Do I just need a constructor and/or deferred initialise step for effects? Do I just need a `draw()` method for static screen elements
-and a `renderFrame()` method for effects?
+- Phase out absolute pixel co-ordinates. We need to calculate position based on the size of the canvas.
 
 ## OLD STUFF BELOW (TODO: SORT IT LATER!)
 

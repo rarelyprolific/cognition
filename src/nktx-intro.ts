@@ -54,7 +54,7 @@ export class NktxIntro {
 
     this.starfield.drawFrame(this.display, 4);
 
-    this.printBitmapFont.drawText(this.display, "NEOKORTEX", 300, 200);
-    this.printBitmapFont.drawText(this.display, "COGNITION", 300, 220);
+    this.printBitmapFont.drawAlignedText(this.display, "NEOKORTEX", "center", "center", 0, -10);
+    this.printBitmapFont.drawAlignedText(this.display, "COGNITION", "center", "center", 0, 10);
   };
 }
