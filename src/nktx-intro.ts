@@ -5,6 +5,7 @@ import fontImageFile from "/font.png";
 
 import { PrintBitmapFont } from "./static-effects/print-bitmap-font";
 import { Starfield } from "./dynamic-effects/starfield";
+import { RainbowSineScroller } from "./dynamic-effects/rainbow-sine-scroller";
 
 /**
  * NktxIntro - A simple demo to show how to use the Cognition library.
@@ -13,6 +14,7 @@ export class NktxIntro {
   private static display: CanvasRenderingContext2D;
   private static printBitmapFont: PrintBitmapFont
   private static starfield: Starfield;
+  private static rainbowSineScroller: RainbowSineScroller;
 
   /**
    * Start the demo.
@@ -44,6 +46,8 @@ export class NktxIntro {
 
     this.starfield = new Starfield();
     this.starfield.initialise(this.display, 100, 4);
+
+    this.rainbowSineScroller = new RainbowSineScroller(this.display, bitmapFont, 16, 16);
   };
 
   /**
@@ -56,5 +60,7 @@ export class NktxIntro {
 
     this.printBitmapFont.drawAlignedText(this.display, "NEOKORTEX", "center", "center", 0, -10);
     this.printBitmapFont.drawAlignedText(this.display, "COGNITION", "center", "center", 0, 10);
+
+    this.rainbowSineScroller.drawFrame(this.display, "SOMETHING");
   };
 }
