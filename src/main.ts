@@ -4,4 +4,4 @@ import { NktxIntro } from "./nktx-intro";
 /**
  * Start the demo in a <canvas> element.
  */
-NktxIntro.start(document.getElementById("screen"));
+NktxIntro.start(document.getElementById("screen")!);
