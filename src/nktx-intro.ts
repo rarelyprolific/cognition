@@ -5,7 +5,7 @@ import fontImageFile from "/font.png";
 
 import { PrintBitmapFont } from "./static-effects/print-bitmap-font";
 import { Starfield } from "./dynamic-effects/starfield";
-import { RainbowSineScroller } from "./dynamic-effects/rainbow-sine-scroller";
+//import { RainbowSineScroller } from "./dynamic-effects/rainbow-sine-scroller";
 import { RadialStarfield } from "./dynamic-effects/radial-starfield";
 
 /**
@@ -15,7 +15,7 @@ export class NktxIntro {
   private static display: CanvasRenderingContext2D;
   private static printBitmapFont: PrintBitmapFont
   private static starfield: Starfield;
-  private static rainbowSineScroller: RainbowSineScroller;
+  //private static rainbowSineScroller: RainbowSineScroller;
   private static radialStarfield: RadialStarfield;
 
   /**
@@ -49,7 +49,7 @@ export class NktxIntro {
     this.starfield = new Starfield();
     this.starfield.initialise(this.display, 100, 4);
 
-    this.rainbowSineScroller = new RainbowSineScroller(this.display, bitmapFont, 16, 16);
+    //this.rainbowSineScroller = new RainbowSineScroller(this.display, bitmapFont, 16, 16);
 
     this.radialStarfield = new RadialStarfield();
     this.radialStarfield.initialise();
