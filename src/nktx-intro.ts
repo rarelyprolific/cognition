@@ -2,21 +2,27 @@ import { get2dDisplayContextFromCanvasElement } from "./tools/get-display";
 import { setBackgroundColour } from "./tools/set-background-colour";
 import { loadImage } from "./tools/load-image";
 import fontImageFile from "/font.png";
+import logoImageFile from "/neokortex-logo.png"
+
 
 import { PrintBitmapFont } from "./static-effects/print-bitmap-font";
+import { ShowImage } from "./static-effects/show-image";
 import { Starfield } from "./dynamic-effects/starfield";
 //import { RainbowSineScroller } from "./dynamic-effects/rainbow-sine-scroller";
 import { RadialStarfield } from "./dynamic-effects/radial-starfield";
+import { Cube } from "./dynamic-effects/cube"
 
 /**
  * NktxIntro - A simple demo to show how to use the Cognition library.
  */
 export class NktxIntro {
   private static display: CanvasRenderingContext2D;
-  private static printBitmapFont: PrintBitmapFont
+  private static printBitmapFont: PrintBitmapFont;
+  private static showImage: ShowImage;
   private static starfield: Starfield;
   //private static rainbowSineScroller: RainbowSineScroller;
   private static radialStarfield: RadialStarfield;
+  private static cube: Cube
 
   /**
    * Start the demo.
@@ -53,6 +59,12 @@ export class NktxIntro {
 
     this.radialStarfield = new RadialStarfield();
     this.radialStarfield.initialise();
+
+    this.cube = new Cube();
+    this.cube.initialise(this.display);
+
+    const logoImage: HTMLImageElement = await loadImage(logoImageFile);
+    this.showImage = new ShowImage(logoImage);
   };
 
   /**
@@ -61,12 +73,15 @@ export class NktxIntro {
   private static renderFrame = () => {
     setBackgroundColour(this.display, "#010B1C");
 
-    //this.starfield.drawFrame(this.display, 4);
-    this.radialStarfield.drawFrame(this.display);
+    this.starfield.drawFrame(this.display, 4);
+    //this.radialStarfield.drawFrame(this.display);
 
     this.printBitmapFont.drawAlignedText(this.display, "NEOKORTEX", "center", "center", 0, -10);
     this.printBitmapFont.drawAlignedText(this.display, "COGNITION", "center", "center", 0, 10);
 
+    this.cube.drawFrame(this.display);
+
     //this.rainbowSineScroller.drawFrame(this.display, "SOMETHING");
+    this.showImage.drawImage(this.display, 0, 400);
   };
 }
