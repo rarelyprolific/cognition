@@ -82,6 +82,6 @@ export class NktxIntro {
     this.cube.drawFrame(this.display);
 
     //this.rainbowSineScroller.drawFrame(this.display, "SOMETHING");
-    this.showImage.drawImage(this.display, 0, 400);
+    this.showImage.drawImage(this.display, 0, 400, 800, 200);
   };
 }
