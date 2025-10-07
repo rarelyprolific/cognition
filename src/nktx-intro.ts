@@ -79,9 +79,9 @@ export class NktxIntro {
     this.printBitmapFont.drawAlignedText(this.display, "NEOKORTEX", "center", "center", 0, -10);
     this.printBitmapFont.drawAlignedText(this.display, "COGNITION", "center", "center", 0, 10);
 
-    this.cube.drawFrame(this.display);
-
     //this.rainbowSineScroller.drawFrame(this.display, "SOMETHING");
     this.showImage.drawImage(this.display, 0, 400, 800, 200);
+
+    this.cube.drawFrame(this.display);
   };
 }

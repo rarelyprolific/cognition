@@ -22,13 +22,13 @@ export class ShowImage {
         height: number) {
 
         // Render image to screen
-        //screen.drawImage(this.image, xPosition, yPosition, 800, 200);
+        screen.drawImage(this.image, xPosition + 120, yPosition - 360, width, height);
 
         // Sine image
         const waveAmplitude = 30; // Max vertical displacement
         const waveFrequency = 0.005; // Controls wave width
 
-        const stripHeight = 2; // Height of each horizontal slice
+        //const stripHeight = 2; // Height of each horizontal slice
         const stripWidth = 2; // Height of each horizontal slice
 
         // for (let y = 0; y < this.image.height; y += stripHeight) {
